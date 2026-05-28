@@ -180,3 +180,49 @@ describe('parsePastedExcel - TSV', () => {
     expect(() => parsePastedExcel(tsv)).toThrow()
   })
 })
+
+// ── parsePastedExcel - 빈줄 구분자 6열 헤더 ──────────────────
+// 재현: 이슈 컬럼 없는 엑셀 양식 붙여넣기 시 날짜가 소비되는 버그
+
+describe('parsePastedExcel - 빈줄 구분자 (6열 헤더)', () => {
+  function makeBlankSep(rows: string[][]): string {
+    // header(6열) + data rows: 모든 셀이 빈줄로 구분
+    const header = ['작성일', '근무시간', '업무명', 'NO.', '업무진행상태', '상세업무내용']
+    const allCells = [...header, ...rows.flat()]
+    return allCells.join('\n\n')
+  }
+
+  it('6열 헤더 — 날짜/근무시간/태스크 정상 파싱', () => {
+    const text = makeBlankSep([
+      ['2024-05-27', '8:00~17:00', '업무A', '1', '완료', '상세 내용 텍스트입니다'],
+    ])
+    const result = parsePastedExcel(text)
+    expect(result.days).toHaveLength(1)
+    expect(result.days[0].reportDate).toBe('2024-05-27')
+    expect(result.days[0].workHours).toBe('8:00~17:00')
+    expect(result.days[0].tasks).toHaveLength(1)
+    expect(result.days[0].tasks[0].status).toBe('COMPLETED')
+  })
+
+  it('6열 헤더 — 카테고리 변경 + 복수 태스크', () => {
+    const text = makeBlankSep([
+      ['2024-05-27', '8:00~17:00', '카테고리A', '1', '완료', '내용 상세'],
+      ['', '', '카테고리B', '2', '진행중', '다른 내용 상세'],
+    ])
+    const result = parsePastedExcel(text)
+    expect(result.days[0].tasks).toHaveLength(2)
+    expect(result.days[0].tasks[0].category).toBe('카테고리A')
+    expect(result.days[0].tasks[1].category).toBe('카테고리B')
+  })
+
+  it('6열 헤더 — 다중 줄 상세내용 (단일 \n) 보존', () => {
+    const multilineContent = '첫 번째 줄\n -두 번째 줄'
+    // 빈줄 구분자로 묶인 멀티라인 셀: 셀 내부는 단일 \n
+    const cells = ['작성일', '근무시간', '업무명', 'NO.', '업무진행상태', '상세업무내용',
+                   '2024-05-27', '8:00~17:00', '업무A', '1', '완료', multilineContent]
+    const text = cells.join('\n\n')
+    const result = parsePastedExcel(text)
+    expect(result.days[0].tasks[0].content).toBe(multilineContent)
+  })
+})
+

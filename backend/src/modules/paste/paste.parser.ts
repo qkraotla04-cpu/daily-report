@@ -110,12 +110,18 @@ function tokenizeBlankSeparated(text: string): RawRow[] {
     .filter((s) => s.length > 0)
 
   // 헤더 위치 찾기 → 데이터 시작
+  // 헤더 열 수는 6(이슈 없음) 또는 7(이슈 있음)으로 가변적이므로
+  // 고정 +7 대신 실제 헤더 토큰 연속 개수만큼만 건너뜀
   let dataStart = 0
   for (let i = 0; i + 6 < cells.length; i++) {
     const win = cells.slice(i, i + 7).map((s) => s.trim())
     const hits = win.filter((s) => HEADER_TOKENS.has(s)).length
     if (hits >= 5) {
-      dataStart = i + 7
+      let headerLen = 0
+      while (i + headerLen < cells.length && HEADER_TOKENS.has(cells[i + headerLen].trim())) {
+        headerLen++
+      }
+      dataStart = i + headerLen
       break
     }
   }
@@ -270,12 +276,17 @@ function tokenizeLineSplit(text: string): RawRow[] {
   const lines = text.split(/\r?\n/).map((s) => s.replace(/\s+$/, ''))
 
   // 헤더 토큰 위치 찾아서 데이터 시작 지점 결정
+  // 헤더 열 수가 6 또는 7로 가변적이므로 고정 +7 대신 실제 개수만큼 건너뜀
   let dataStart = 0
   for (let i = 0; i + 6 < lines.length; i++) {
     const win = lines.slice(i, i + 7).map((s) => s.trim())
     const headerHits = win.filter((s) => HEADER_TOKENS.has(s)).length
     if (headerHits >= 5) {
-      dataStart = i + 7
+      let headerLen = 0
+      while (i + headerLen < lines.length && HEADER_TOKENS.has(lines[i + headerLen].trim())) {
+        headerLen++
+      }
+      dataStart = i + headerLen
       break
     }
   }
