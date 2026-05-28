@@ -3,6 +3,9 @@ import { useQuery } from '@tanstack/react-query'
 import { reportsApi, type DailyReportFromServer } from '../api/reports'
 import { dateToIso, startOfMonth, endOfMonth, formatKoreanDate } from '../utils/date'
 import ReportVersionPanel from '../components/ReportVersionPanel'
+import HistoryTableView from '../components/HistoryTableView'
+
+type ViewMode = 'calendar' | 'table'
 
 const STATUS_LABEL: Record<string, { ko: string; cls: string }> = {
   COMPLETED:   { ko: '완료',  cls: 'v2-pill-done border border-transparent' },
@@ -13,6 +16,7 @@ const STATUS_LABEL: Record<string, { ko: string; cls: string }> = {
 export default function MyHistory() {
   const [cursor, setCursor] = useState(new Date())
   const [selectedIso, setSelectedIso] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<ViewMode>('calendar')
 
   const monthStart = startOfMonth(cursor)
   const monthEnd = endOfMonth(cursor)
@@ -46,12 +50,48 @@ export default function MyHistory() {
 
   const selectedReport = selectedIso ? reportsByDate.get(selectedIso) : null
   const todayIsoStr = dateToIso(new Date())
-
   const submitCount = historyQuery.data?.length ?? 0
+  const allReports = historyQuery.data ?? []
+
+  const navPrev = () => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1))
+  const navNext = () => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1))
+  const navToday = () => setCursor(new Date())
 
   return (
     <div className="px-12 py-10 max-w-[1180px]">
 
+      {/* View mode toggle */}
+      <div className="flex justify-end mb-4">
+        <div className="flex border-[1.5px] overflow-hidden" style={{ borderColor: 'var(--v2-line)', borderRadius: '4px' }}>
+          {(['calendar', 'table'] as ViewMode[]).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => setViewMode(mode)}
+              className="px-4 py-1.5 text-[12px] font-mono uppercase tracking-wider font-semibold transition-colors"
+              style={{
+                background: viewMode === mode ? 'var(--v2-accent)' : 'var(--v2-paper)',
+                color: viewMode === mode ? 'var(--v2-cream)' : 'var(--v2-ink-muted)',
+                borderRight: mode === 'calendar' ? '1px solid var(--v2-line)' : undefined,
+              }}
+            >
+              {mode === 'calendar' ? '캘린더' : '전체보기'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {viewMode === 'table' ? (
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+          <HistoryTableView
+            reports={allReports}
+            cursor={cursor}
+            onPrev={navPrev}
+            onNext={navNext}
+            onToday={navToday}
+            submitCount={submitCount}
+          />
+        </div>
+      ) : (
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Calendar */}
         <div className="lg:col-span-3 bg-white border border-slate-200 rounded-2xl p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
@@ -221,6 +261,7 @@ export default function MyHistory() {
           )}
         </div>
       </div>
+      )}
     </div>
   )
 }

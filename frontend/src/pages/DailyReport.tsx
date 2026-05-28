@@ -1,30 +1,14 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { useAuth } from '../contexts/AuthContext'
-import { pasteApi, type ParsedDay, type ParsedTask } from '../api/paste'
-import { todayIso } from '../utils/date'
+import { pasteApi, type ParsedDay } from '../api/paste'
 import PasteDropzone from '../components/PasteDropzone'
 import DirectEntryForm from '../components/DirectEntryForm'
+import PastePreviewTable from '../components/PastePreviewTable'
 
 type Tab = 'PASTE' | 'FORM'
 
-const STATUS_LABEL: Record<string, { ko: string; cls: string }> = {
-  COMPLETED:   { ko: '완료',   cls: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
-  IN_PROGRESS: { ko: '진행중', cls: 'bg-indigo-50 text-indigo-700 border-indigo-100' },
-  ON_HOLD:     { ko: '보류',   cls: 'bg-paper-warm text-ink-muted border-line' },
-}
-
-const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
-
-function dateLine(iso: string): { md: string; w: string } {
-  const d = new Date(iso + 'T00:00:00')
-  const md = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
-  return { md, w: `${WEEKDAY[d.getDay()]}요일` }
-}
-
 export default function DailyReport() {
-  const { user } = useAuth()
   const qc = useQueryClient()
   const [tab, setTab] = useState<Tab>('PASTE')
   const [days, setDays] = useState<ParsedDay[]>([])
@@ -76,7 +60,6 @@ export default function DailyReport() {
     submitMutation.mutate(text)
   }
 
-  const today = dateLine(todayIso())
   const totalTasks = days.reduce((s, d) => s + d.tasks.length, 0)
   const pendingCount = days.reduce(
     (s, d) => s + d.tasks.filter((t) => t.status === 'IN_PROGRESS').length,
@@ -194,9 +177,7 @@ export default function DailyReport() {
             </details>
           )}
 
-          {days.map((day) => (
-            <DayCard key={day.reportDate} day={day} />
-          ))}
+          <PastePreviewTable days={days} />
         </>
       )}
     </div>
@@ -226,91 +207,3 @@ function TabBtn({
   )
 }
 
-function DayCard({ day }: { day: ParsedDay }) {
-  const d = dateLine(day.reportDate)
-  const warnCount = day.tasks.reduce((s, t) => s + (t.warnings?.length ?? 0), 0)
-  return (
-    <article className="relative bg-paper mb-5 overflow-hidden border-[1.5px] border-ink" style={{borderRadius:'3px'}}>
-      <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent" aria-hidden="true" />
-      <header className="px-7 py-4 border-b-[1.5px] border-ink bg-paper-warm flex items-baseline justify-between">
-        <div className="flex items-baseline gap-3">
-          <h2 className="font-sans font-bold text-[20px] tracking-[-0.03em] num-mono text-ink">{d.md}</h2>
-          <span className="text-[12px] font-mono uppercase tracking-[0.12em] text-ink-muted">{d.w}</span>
-          <span className="v2-pill v2-pill-accent">{day.tasks.length} TASKS</span>
-          {warnCount > 0 && (
-            <span className="text-[10px] font-mono px-2 py-0.5 bg-amber-100 text-amber-700 border border-amber-200" style={{borderRadius:'2px'}}>
-              ⚠ {warnCount}
-            </span>
-          )}
-        </div>
-        <span className="text-[11px] font-mono tracking-wider text-ink-muted num-mono uppercase">{day.workHours ?? '—'}</span>
-      </header>
-      <div className="divide-y divide-line-soft">
-        {day.tasks.map((t, i) => (
-          <TaskRow key={`${day.reportDate}-${i}`} task={t} />
-        ))}
-      </div>
-    </article>
-  )
-}
-
-function TaskRow({ task }: { task: ParsedTask }) {
-  const status = task.status ? STATUS_LABEL[task.status] : null
-  return (
-    <div className="px-7 py-4 flex gap-5 items-start">
-      <div className="text-[12px] text-ink-faint w-12 pt-1 font-mono num-mono">{task.taskNo}</div>
-      <div className="flex-1 min-w-0">
-        {task.category && (
-          <div className="text-[11px] uppercase tracking-[0.14em] text-ink-muted font-mono font-semibold inline-flex items-center gap-1.5">
-            <span className="w-1 h-1 rounded-full bg-accent" aria-hidden="true" />
-            {task.category}
-          </div>
-        )}
-        <div className="text-[14px] mt-1 leading-relaxed whitespace-pre-line text-ink">{task.content}</div>
-        {task.taskIssue && (
-          <div className="mt-2 text-[12px] text-accent flex items-center gap-1.5">
-            <span className="w-1 h-1 rounded-full bg-accent" />
-            {task.taskIssue}
-          </div>
-        )}
-        {task.warnings && task.warnings.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-1">
-            {task.warnings.map((w, i) => (
-              <span key={i} className="text-[10px] px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 font-mono" style={{borderRadius:'2px'}}>
-                ⚠ {w}
-              </span>
-            ))}
-          </div>
-        )}
-        {(task.extractedLots.length > 0 || task.extractedQtys.length > 0) && (
-          <div className="mt-2.5 flex flex-wrap gap-1.5 text-[10px] font-mono uppercase tracking-wider">
-            {task.extractedLots.map((lot, i) => (
-              <span
-                key={`l${i}`}
-                className="px-2 py-0.5 rounded bg-paper-warm text-ink-muted border border-line"
-              >
-                LOT · {lot}
-              </span>
-            ))}
-            {task.extractedQtys.map((qty, i) => (
-              <span
-                key={`q${i}`}
-                className="px-2 py-0.5 rounded bg-accent-soft text-accent border border-accent/20"
-              >
-                {qty}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-      {status && (
-        <span
-          className={`text-[11px] px-2.5 py-1 border font-mono uppercase tracking-[0.1em] font-bold ${status.cls}`}
-          style={{borderRadius:'2px'}}
-        >
-          {status.ko}
-        </span>
-      )}
-    </div>
-  )
-}
