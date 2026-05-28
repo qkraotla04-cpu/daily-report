@@ -1,0 +1,581 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Blueprint Theme — Engineering Drawing / Navy Ink */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+:root {
+  /* ── Cyanotype Dark Surface ── */
+  --v2-cream:        #07182E;
+  --v2-cream-deep:   #050F1F;
+  --v2-paper:        #0E2542;
+  --v2-paper-warm:   #102B4D;
+
+  /* ── Light Ink on Dark ── */
+  --v2-ink:          #E8F1FF;
+  --v2-ink-2:        #B8D2F0;
+  --v2-ink-muted:    #7FA4CC;
+  --v2-ink-faint:    #6285AE;
+  --v2-line:         #2A4A75;
+  --v2-line-soft:    #1B355A;
+  --v2-line-dash:    rgba(125,200,255,0.28);
+
+  /* ── Cyan Accent ── */
+  --v2-accent:       #5AC8FF;
+  --v2-accent-deep:  #2EA3E0;
+  --v2-accent-soft:  rgba(90,200,255,0.16);
+  --v2-accent-glow:  rgba(90,200,255,0.30);
+
+  /* ── State colors ── */
+  --v2-state-doing:  #5AC8FF;
+  --v2-state-done:   #34D399;
+  --v2-state-wait:   #FBBF24;
+  --v2-state-danger: #F87171;
+
+  /* ── Typography — Inter only (blueprint: no serif) ── */
+  --v2-font-sans:    'Inter', system-ui, -apple-system, 'Noto Sans KR', sans-serif;
+  --v2-font-serif:   'Inter', system-ui, -apple-system, 'Noto Sans KR', sans-serif;
+  --v2-font-mono:    'JetBrains Mono', 'D2Coding', 'Courier New', monospace;
+
+  /* ── Radius — sharp / angular ── */
+  --v2-radius-sm:    2px;
+  --v2-radius-md:    3px;
+  --v2-radius-lg:    4px;
+  --v2-radius-xl:    6px;
+
+  /* ── Shadows — none (flat engineering drawing) ── */
+  --v2-shadow-card:  none;
+  --v2-shadow-pop:   none;
+  --v2-shadow-soft:  none;
+
+  --v2-ease:         cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --v2-fast:         0.15s var(--v2-ease);
+  --v2-mid:          0.25s var(--v2-ease);
+  --v2-slow:         0.45s var(--v2-ease);
+}
+
+@layer base {
+  html, body {
+    background: var(--v2-cream);
+    color: var(--v2-ink);
+    font-family: var(--v2-font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.005em;
+  }
+
+  /* #root must be transparent so body::before/after grid shows through */
+  #root {
+    background: transparent;
+    position: relative;
+    z-index: 1;
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--v2-ink);
+    line-height: 1.1;
+  }
+
+  /* Blueprint: accent italic → Inter 800 bold (no Fraunces) */
+  em.accent-italic,
+  .accent-italic {
+    font-family: var(--v2-font-sans);
+    font-style: normal;
+    font-weight: 800;
+    color: var(--v2-accent);
+  }
+
+  /* Form focus → Blueprint Blue outline */
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid var(--v2-accent) !important;
+    outline-offset: 1px !important;
+    border-color: var(--v2-accent) !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ── Light Blueprint Theme ── */
+:root[data-theme="light"] {
+  --v2-cream:        #D2E4F7;
+  --v2-cream-deep:   #BDD4EF;
+  --v2-paper:        #E6F1FF;
+  --v2-paper-warm:   #DCE9F9;
+  --v2-ink:          #07182E;
+  --v2-ink-2:        #0D2A50;
+  --v2-ink-muted:    #2C5580;
+  --v2-ink-faint:    #5A84AA;
+  --v2-line:         #68A5D5;
+  --v2-line-soft:    #8CC0E8;
+  --v2-line-dash:    rgba(20,80,180,0.22);
+  --v2-accent:       #0070BB;
+  --v2-accent-deep:  #005599;
+  --v2-accent-soft:  rgba(0,112,187,0.14);
+  --v2-accent-glow:  rgba(0,112,187,0.22);
+  --v2-state-doing:  #0070BB;
+  --v2-state-done:   #0A7A4B;
+  --v2-state-wait:   #B37800;
+  --v2-state-danger: #C73535;
+}
+:root[data-theme="light"] body::before {
+  background-image:
+    linear-gradient(rgba(0,70,180,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,70,180,0.07) 1px, transparent 1px);
+}
+:root[data-theme="light"] body::after {
+  background-image:
+    linear-gradient(rgba(0,70,180,0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,70,180,0.13) 1px, transparent 1px);
+}
+:root[data-theme="light"] .text-white { color: #FFFFFF !important; }
+
+/* ── Blueprint grid background (engineering drawing dots) ── */
+body {
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(180,210,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180,210,255,0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+/* 진한 그리드 — 240px 마다 (coarse drafting-paper grid) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(180,210,255,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180,210,255,0.10) 1px, transparent 1px);
+  background-size: 240px 240px;
+  pointer-events: none;
+  z-index: 0;
+}
+body > * { position: relative; z-index: 1; }
+
+@layer utilities {
+  .num-mono { font-variant-numeric: tabular-nums; }
+
+  /* Print */
+  .print-serif-display { font-family: var(--v2-font-sans); font-weight: 800; }
+  .print-serif         { font-family: var(--v2-font-sans); font-weight: 600; }
+
+  .font-serif-edit { font-family: var(--v2-font-sans); }
+  .font-mono-edit  { font-family: var(--v2-font-mono); }
+
+  /* Blueprint grid tile background (page sections) */
+  .paper-bg {
+    background-image:
+      linear-gradient(rgba(180,210,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(180,210,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Stamp — mono caps with leading rule */
+  .v2-stamp {
+    font-family: var(--v2-font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--v2-accent);
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .v2-stamp::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background: var(--v2-accent);
+  }
+
+  .v2-issue {
+    font-family: var(--v2-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--v2-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .v2-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .v2-divider::before,
+  .v2-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--v2-line);
+  }
+  .v2-divider span {
+    font-family: var(--v2-font-mono);
+    font-size: 10px;
+    color: var(--v2-ink-faint);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Pill / badge — blueprint: sharp */
+  .v2-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: var(--v2-radius-sm);
+    font-family: var(--v2-font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .v2-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    border-radius: 50%;
+  }
+  .v2-pill-doing  { background: rgba(90,200,255,0.12);   color: var(--v2-state-doing); }
+  .v2-pill-done   { background: rgba(52,211,153,0.12);   color: var(--v2-state-done); }
+  .v2-pill-wait   { background: rgba(251,191,36,0.12);   color: var(--v2-state-wait); }
+  .v2-pill-danger { background: rgba(248,113,113,0.10);  color: var(--v2-state-danger); }
+  .v2-pill-accent { background: var(--v2-accent-soft);   color: var(--v2-accent); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ✦ Blueprint Component System — ed-* (blueprint overrides)
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* ── Top bar (sidebar layout: unused but kept for compatibility) ── */
+  .ed-topbar {
+    background: rgba(14, 37, 66, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--v2-ink);
+  }
+
+  /* ── Brand mark — Inter 800 bold, navy ink ── */
+  .ed-brand-mark {
+    font-family: var(--v2-font-sans);
+    font-style: normal;
+    font-weight: 900;
+    color: var(--v2-ink);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .ed-brand-name {
+    font-family: var(--v2-font-mono);
+    color: var(--v2-ink-muted);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  /* ── Nav link (bottom-border accent) ── */
+  .ed-nav-link {
+    font-family: var(--v2-font-sans);
+    color: var(--v2-ink-muted);
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+    transition: color var(--v2-fast), border-color var(--v2-fast);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .ed-nav-link:hover {
+    color: var(--v2-ink);
+    border-bottom-color: var(--v2-accent);
+  }
+  .ed-nav-link[aria-current='page'],
+  .ed-nav-link.active {
+    color: var(--v2-accent);
+    border-bottom-color: var(--v2-accent);
+    font-weight: 800;
+  }
+
+  /* ── Headline / bold / stamp aliases ── */
+  .ed-headline {
+    font-family: var(--v2-font-sans);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+  }
+  /* Blueprint: "italic" accent → Inter 800 blue */
+  .ed-italic {
+    font-family: var(--v2-font-sans);
+    font-style: normal;
+    font-weight: 800;
+    color: var(--v2-accent);
+  }
+  .ed-stamp {
+    font-family: var(--v2-font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--v2-ink-faint);
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ed-stamp::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background: var(--v2-ink-faint);
+  }
+
+  /* ── Card — flat blueprint card ── */
+  .ed-card {
+    background: var(--v2-paper);
+    border: 1.5px solid var(--v2-ink);
+    border-radius: var(--v2-radius-md);
+    box-shadow: none;
+    transition: border-color var(--v2-fast);
+    position: relative;
+  }
+  .ed-card::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px dashed var(--v2-line-dash);
+    pointer-events: none;
+    border-radius: 1px;
+  }
+
+  /* Inner dashed frame only — apply to colored-border cards that need blueprint decoration */
+  .bp-inner-dash { position: relative; }
+  .bp-inner-dash::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px dashed var(--v2-line-dash);
+    pointer-events: none;
+    border-radius: 1px;
+  }
+
+  /* ── Numeric — bold navy (no italic) ── */
+  .ed-numeric {
+    font-family: var(--v2-font-sans);
+    font-style: normal;
+    font-weight: 900;
+    color: var(--v2-accent);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+  }
+
+  /* ── Divider ── */
+  .ed-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .ed-divider::before,
+  .ed-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--v2-line);
+  }
+  .ed-divider > span {
+    font-family: var(--v2-font-mono);
+    font-size: 10px;
+    color: var(--v2-ink-faint);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ── Pill (accent) — blueprint: sharp ── */
+  .ed-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: var(--v2-radius-sm);
+    font-family: var(--v2-font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--v2-accent-soft);
+    color: var(--v2-accent);
+    border: 1px solid var(--v2-accent);
+  }
+  .ed-pill::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: currentColor;
+    border-radius: 50%;
+  }
+
+  /* ── Buttons — blueprint: flat, sharp, ink/blue ── */
+  .ed-btn-primary {
+    font-family: var(--v2-font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    border-radius: var(--v2-radius-sm);
+    background: var(--v2-accent);
+    color: #fff;
+    border: 1.5px solid var(--v2-accent);
+    box-shadow: none;
+    transition: all var(--v2-fast);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .ed-btn-primary:hover {
+    background: var(--v2-accent-deep);
+    border-color: var(--v2-accent-deep);
+  }
+  .ed-btn-outline {
+    font-family: var(--v2-font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 10px 18px;
+    border-radius: var(--v2-radius-sm);
+    background: var(--v2-paper);
+    color: var(--v2-ink);
+    border: 1.5px solid var(--v2-ink);
+    transition: all var(--v2-fast);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .ed-btn-outline:hover {
+    background: var(--v2-accent);
+    color: #fff;
+    border-color: var(--v2-accent);
+  }
+
+  /* ── Chip — blueprint: sharp ── */
+  .ed-chip {
+    font-family: var(--v2-font-mono);
+    font-size: 11px;
+    padding: 6px 13px;
+    border: 1.5px solid var(--v2-line);
+    border-radius: var(--v2-radius-sm);
+    background: var(--v2-paper);
+    color: var(--v2-ink-muted);
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: all var(--v2-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+  }
+  .ed-chip:hover {
+    border-color: var(--v2-accent);
+    color: var(--v2-accent);
+  }
+  .ed-chip.active,
+  .ed-chip[aria-current='page'] {
+    background: var(--v2-accent);
+    border-color: var(--v2-accent);
+    color: #fff;
+  }
+}
+
+/* ── Slate palette → Cyanotype remap (legacy page components) ── */
+.bg-white                            { background-color: var(--v2-paper) !important; }
+.bg-slate-50                         { background-color: var(--v2-paper-warm) !important; }
+.bg-slate-100                        { background-color: var(--v2-paper-warm) !important; }
+.text-slate-900, .text-slate-800     { color: var(--v2-ink) !important; }
+.text-slate-700, .text-slate-600     { color: var(--v2-ink-2) !important; }
+.text-slate-500, .text-slate-400     { color: var(--v2-ink-muted) !important; }
+.text-slate-300                      { color: var(--v2-ink-faint) !important; }
+.border-slate-100, .border-slate-200 { border-color: var(--v2-line) !important; }
+.border-slate-300                    { border-color: var(--v2-line) !important; }
+.divide-y > * + *                    { border-color: var(--v2-line) !important; }
+.hover\:bg-slate-50\/50:hover        { background-color: rgba(16,43,77,0.5) !important; }
+.hover\:bg-slate-100:hover           { background-color: var(--v2-paper-warm) !important; }
+/* bg-slate-900 버튼 → accent */
+.bg-slate-900                        { background-color: var(--v2-accent) !important; }
+.hover\:bg-slate-800:hover           { background-color: var(--v2-accent-deep) !important; }
+.text-white                          { color: #050F1F !important; }
+/* 모달 오버레이 */
+.bg-slate-900\/40                    { background-color: rgba(7,24,46,0.7) !important; }
+/* Emerald / Rose / Amber / Purple state */
+.text-emerald-700, .text-emerald-800 { color: var(--v2-state-done) !important; }
+.bg-emerald-50                       { background-color: rgba(52,211,153,0.12) !important; }
+.border-emerald-100, .border-emerald-200 { border-color: rgba(52,211,153,0.3) !important; }
+.text-rose-600, .text-rose-700       { color: var(--v2-state-danger) !important; }
+.bg-rose-50                          { background-color: rgba(248,113,113,0.1) !important; }
+.border-rose-200                     { border-color: rgba(248,113,113,0.3) !important; }
+.text-amber-600                      { color: var(--v2-state-wait) !important; }
+.bg-amber-50                         { background-color: rgba(251,191,36,0.1) !important; }
+.bg-amber-600                        { background-color: var(--v2-state-wait) !important; }
+.hover\:bg-amber-700:hover           { background-color: #D97706 !important; }
+.text-purple-700                     { color: #C084FC !important; }
+.bg-purple-50                        { background-color: rgba(192,132,252,0.1) !important; }
+.border-purple-100                   { border-color: rgba(192,132,252,0.3) !important; }
+/* Indigo → Cyan */
+.text-indigo-600, .text-indigo-700   { color: var(--v2-accent) !important; }
+.bg-indigo-50                        { background-color: var(--v2-accent-soft) !important; }
+.border-indigo-100                   { border-color: rgba(90,200,255,0.3) !important; }
+.focus\:ring-indigo-500:focus        { --tw-ring-color: var(--v2-accent) !important; }
+
+/* ── 스크롤바 (Cyanotype Dark) ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--v2-bg-deep, #050F1F); border-left: 1px solid var(--v2-line); }
+::-webkit-scrollbar-thumb { background: var(--v2-line); border: 2px solid var(--v2-cream); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--v2-accent); }
+
+/* ── 라이브 도트 펄스 애니메이션 ── */
+@keyframes bp-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--v2-state-done); }
+  50%       { opacity: 0.5; box-shadow: 0 0 2px var(--v2-state-done); }
+}
+.bp-live-dot { animation: bp-pulse 1.8s ease-in-out infinite; }
+
+/* ── 포커스 링 Dark 대응 ── */
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--v2-accent) !important;
+  outline-offset: 1px !important;
+  border-color: var(--v2-accent) !important;
+}
+
+/* ── 모달 backdrop ── */
+.backdrop-blur-sm { backdrop-filter: blur(4px); }
+
+/* Print */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm;
+  }
+  html, body { background: #F8FAFC !important; }
+  .no-print { display: none !important; }
+  .paper-bg { background-image: none !important; }
+  body::before, body::after { display: none !important; }
+  .break-inside-avoid { break-inside: avoid; page-break-inside: avoid; }
+}

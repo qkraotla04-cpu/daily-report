@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>2. Dark Enterprise — 업무일지</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; letter-spacing: -0.005em; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .grid-bg { background-image: linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 100% 28px; }
+  .glow-amber { box-shadow: 0 0 0 1px rgba(245,158,11,0.25), 0 4px 24px -6px rgba(245,158,11,0.18); }
+  .accent-line { background: linear-gradient(90deg, rgba(245,158,11,0.6) 0%, rgba(245,158,11,0) 100%); }
+</style>
+</head>
+<body class="bg-[#0A0E1A] text-slate-200">
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-56 bg-[#070A14] border-r border-white/[0.05] flex flex-col">
+    <div class="px-5 pt-6 pb-7">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-md bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-[#070A14] font-bold text-sm">L</div>
+        <div>
+          <div class="text-[13px] font-semibold tracking-tight text-white">L&K BIOMED</div>
+          <div class="text-[10px] tracking-[0.2em] text-amber-400/80 mono">DAILY OPS</div>
+        </div>
+      </div>
+    </div>
+    <div class="px-3 mb-2 text-[10px] mono tracking-[0.2em] text-slate-500">NAVIGATION</div>
+    <nav class="flex-1 px-3 space-y-0.5 text-[13px]">
+      <a class="flex items-center gap-3 px-3 py-2 rounded-md bg-white/[0.04] text-amber-300 border-l-2 border-amber-400 -ml-px font-medium">오늘 업무일지</a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-400 hover:bg-white/[0.03] hover:text-slate-200">내 이력</a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-400 hover:bg-white/[0.03] hover:text-slate-200">일일 취합본</a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-400 hover:bg-white/[0.03] hover:text-slate-200">주간 요약</a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-400 hover:bg-white/[0.03] hover:text-slate-200">사용자 관리</a>
+    </nav>
+    <div class="p-4 border-t border-white/[0.05]">
+      <div class="text-[10px] mono tracking-[0.2em] text-slate-500 mb-2">SESSION</div>
+      <div class="flex items-center gap-2.5">
+        <div class="relative">
+          <div class="w-7 h-7 rounded-md bg-white/[0.06] text-amber-300 text-xs flex items-center justify-center font-semibold">관</div>
+          <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 border-2 border-[#070A14]"></span>
+        </div>
+        <div class="leading-tight">
+          <div class="text-[12.5px] text-white">LNK 관리자</div>
+          <div class="text-[10px] text-slate-500 mono tracking-wider">ADMIN</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 grid-bg">
+    <!-- Topbar -->
+    <header class="h-14 border-b border-white/[0.05] flex items-center px-8 gap-6 bg-[#0A0E1A]/80 backdrop-blur sticky top-0 z-10">
+      <div class="flex items-center gap-2.5 mono text-[12px]">
+        <span class="text-slate-500">SYS</span>
+        <span class="text-slate-300">/</span>
+        <span class="text-slate-300">DAILY-REPORT</span>
+        <span class="text-slate-500">/</span>
+        <span class="text-amber-300">TODAY</span>
+      </div>
+      <div class="ml-auto flex items-center gap-5 text-[11.5px] mono">
+        <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span class="text-slate-400">API</span><span class="text-emerald-300">200ms</span></div>
+        <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span class="text-slate-400">DB</span><span class="text-emerald-300">SYNC</span></div>
+        <div class="text-slate-300">2026.04.30 16:25:31 KST</div>
+      </div>
+    </header>
+
+    <div class="px-8 py-7 max-w-[1180px]">
+      <!-- Title row -->
+      <div class="flex items-end justify-between mb-7">
+        <div>
+          <div class="text-[10px] mono tracking-[0.25em] text-amber-400/90 mb-2">▎DAILY REPORT · LNK 관리자</div>
+          <h1 class="text-[28px] font-semibold tracking-tight text-white">오늘 업무일지<span class="ml-3 text-amber-400/60 font-normal">2026.04.30</span></h1>
+          <div class="mt-1 h-px w-24 accent-line"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-3 text-right">
+          <div class="px-4 py-2 rounded border border-white/[0.06] bg-white/[0.02]">
+            <div class="text-[10px] mono tracking-wider text-slate-500">DAYS</div>
+            <div class="text-xl mono text-white">2</div>
+          </div>
+          <div class="px-4 py-2 rounded border border-white/[0.06] bg-white/[0.02]">
+            <div class="text-[10px] mono tracking-wider text-slate-500">TASKS</div>
+            <div class="text-xl mono text-white">11</div>
+          </div>
+          <div class="px-4 py-2 rounded border border-amber-500/20 bg-amber-500/[0.04]">
+            <div class="text-[10px] mono tracking-wider text-amber-400/70">PENDING</div>
+            <div class="text-xl mono text-amber-300">4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex border-b border-white/[0.06] mb-5 mono text-[11.5px] tracking-[0.15em]">
+        <button class="px-5 py-3 text-amber-300 border-b-2 border-amber-400 -mb-px">ⓟ EXCEL PASTE</button>
+        <button class="px-5 py-3 text-slate-500 hover:text-slate-300">ⓕ FORM INPUT</button>
+      </div>
+
+      <!-- Paste -->
+      <section class="rounded-md border border-white/[0.06] bg-[#0F1422] mb-6">
+        <div class="px-5 py-3 border-b border-white/[0.04] flex items-center justify-between">
+          <div class="flex items-center gap-2 text-[12px]"><span class="mono text-amber-400/80 tracking-wider">▸ PASTE_REGION</span><span class="text-slate-500">7-COL · TSV / TAB-DELIM</span></div>
+          <span class="mono text-[10px] px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">CTRL + V</span>
+        </div>
+        <div class="p-8 text-center">
+          <div class="text-[13px] text-slate-400">엑셀 행 전체 복사 후 <span class="text-amber-300 mono">[Ctrl+V]</span></div>
+          <div class="text-[11.5px] text-slate-500 mt-1.5 mono">FORWARD-FILL · MULTI-DATE · MERGED-CELL AWARE</div>
+        </div>
+      </section>
+
+      <div class="flex items-center justify-between mb-3">
+        <div class="text-[11px] mono tracking-[0.2em] text-slate-500">▎PARSED PREVIEW</div>
+        <button class="px-5 py-2 rounded bg-amber-400 hover:bg-amber-300 text-[#070A14] text-[12.5px] font-bold tracking-wide mono glow-amber">SUBMIT ALL ▸</button>
+      </div>
+
+      <!-- Day blocks -->
+      <article class="rounded-md border border-white/[0.06] bg-[#0F1422] mb-4 overflow-hidden">
+        <header class="px-5 py-3 border-b border-white/[0.06] flex items-center justify-between bg-white/[0.015]">
+          <div class="flex items-center gap-3">
+            <div class="mono text-[12.5px] text-amber-300">2026.04.28</div>
+            <div class="mono text-[10.5px] text-slate-500 tracking-wider">MON</div>
+            <div class="mono text-[10.5px] text-slate-400">08:00–17:00</div>
+          </div>
+          <div class="mono text-[10.5px] text-slate-500">5 TASKS</div>
+        </header>
+        <table class="w-full text-[12.5px]">
+          <thead class="text-[10px] mono tracking-[0.2em] text-slate-500 bg-white/[0.015]">
+            <tr><th class="text-left font-normal px-5 py-2 w-14">NO</th><th class="text-left font-normal py-2 w-44">CATEGORY</th><th class="text-left font-normal py-2">CONTENT</th><th class="text-left font-normal py-2 w-20">STATUS</th><th class="px-5 py-2 w-44 text-left font-normal">ISSUE</th></tr>
+          </thead>
+          <tbody class="divide-y divide-white/[0.04]">
+            <tr><td class="px-5 py-3 mono text-amber-300/80">1-1</td><td class="text-slate-300">입·출고 관련업무</td><td class="py-3 text-slate-200">SCM 입고 완료_입고증 2건 / IMP_2종 / CM건</td><td><span class="mono text-[10px] px-2 py-0.5 rounded border border-emerald-400/30 bg-emerald-400/[0.08] text-emerald-300">DONE</span></td><td class="text-slate-500">—</td></tr>
+            <tr><td class="px-5 py-3 mono text-amber-300/80">1-2</td><td class="text-slate-300">입·출고 관련업무</td><td class="py-3 text-slate-200">멸균 2BOX_배차요청 및 입고</td><td><span class="mono text-[10px] px-2 py-0.5 rounded border border-emerald-400/30 bg-emerald-400/[0.08] text-emerald-300">DONE</span></td><td class="text-slate-500">—</td></tr>
+            <tr><td class="px-5 py-3 mono text-amber-300/80">2</td><td class="text-slate-300">DHR 관련 업무</td><td class="py-3 text-slate-200">Cervical Plate_DHR 검토</td><td><span class="mono text-[10px] px-2 py-0.5 rounded border border-amber-400/40 bg-amber-400/[0.08] text-amber-300">WIP</span></td><td class="text-slate-500">—</td></tr>
+            <tr><td class="px-5 py-3 mono text-amber-300/80">5</td><td class="text-slate-300">밸리데이션 관련 업무</td><td class="py-3 text-slate-200">CNC_A타입 밸리데이션_Reduction Poly Head 1종 완료&gt;QA · 200EA중 시료용 44EA 전달</td><td><span class="mono text-[10px] px-2 py-0.5 rounded border border-amber-400/40 bg-amber-400/[0.08] text-amber-300">WIP</span></td><td class="text-slate-500">—</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="rounded-md border border-white/[0.06] bg-[#0F1422] overflow-hidden">
+        <header class="px-5 py-3 border-b border-white/[0.06] flex items-center justify-between bg-white/[0.015]">
+          <div class="flex items-center gap-3">
+            <div class="mono text-[12.5px] text-amber-300">2026.04.29</div>
+            <div class="mono text-[10.5px] text-slate-500 tracking-wider">TUE</div>
+            <div class="mono text-[10.5px] text-slate-400">08:00–17:00</div>
+          </div>
+          <div class="mono text-[10.5px] text-slate-500">6 TASKS</div>
+        </header>
+        <table class="w-full text-[12.5px]">
+          <tbody class="divide-y divide-white/[0.04]">
+            <tr><td class="px-5 py-3 mono text-amber-300/80 w-14">3-1</td><td class="text-slate-300 w-44">생산의뢰서 관련 업무</td><td class="py-3 text-slate-200">Bridge Plate Template (2종) 공정 입력</td><td class="w-20"><span class="mono text-[10px] px-2 py-0.5 rounded border border-amber-400/40 bg-amber-400/[0.08] text-amber-300">WIP</span></td><td class="px-5 py-3 w-44 text-rose-300/90 text-[11.5px] mono">26.4.30 검사기준서 배포</td></tr>
+            <tr><td class="px-5 py-3 mono text-amber-300/80">5</td><td class="text-slate-300">밸리데이션 관련 업무</td><td class="py-3 text-slate-200">CNC_A타입 밸리데이션_Reduction Poly Head 1종 완료&gt;QA</td><td><span class="mono text-[10px] px-2 py-0.5 rounded border border-emerald-400/30 bg-emerald-400/[0.08] text-emerald-300">DONE</span></td><td class="px-5 py-3 text-slate-400 text-[11.5px] mono">밸리데이션 END</td></tr>
+          </tbody>
+        </table>
+      </article>
+    </div>
+  </main>
+</div>
+</body>
+</html>

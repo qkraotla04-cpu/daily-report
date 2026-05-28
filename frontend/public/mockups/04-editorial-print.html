@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>4. Editorial Print — 업무일지</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; letter-spacing: 0; }
+  .serif-display { font-family: 'Playfair Display', serif; font-feature-settings: 'liga', 'dlig'; }
+  .serif-body { font-family: 'Source Serif 4', 'Source Serif Pro', Georgia, serif; }
+  .num-mono { font-variant-numeric: tabular-nums; }
+  .rule-thick { background: #1E3A8A; height: 4px; }
+  .rule-thin { border-top: 1px solid #1E3A8A; }
+  .smallcaps { font-variant: small-caps; letter-spacing: 0.08em; text-transform: lowercase; }
+  /* paper texture */
+  .paper { background: #FAFAF5; background-image: radial-gradient(rgba(30,58,138,0.025) 1px, transparent 1px); background-size: 4px 4px; }
+</style>
+</head>
+<body class="paper text-slate-900 min-h-screen">
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-60 bg-[#F5F2E8] border-r-2 border-slate-900 flex flex-col">
+    <div class="px-6 pt-7 pb-6 border-b-2 border-slate-900">
+      <div class="serif-display text-[22px] font-bold leading-none">L&K</div>
+      <div class="serif-display text-[22px] font-bold leading-none">BIOMED</div>
+      <div class="mt-2 text-[10px] tracking-[0.3em] uppercase text-slate-700">Daily Operations Ledger</div>
+    </div>
+    <div class="px-5 pt-5 pb-2 text-[10px] tracking-[0.25em] uppercase text-slate-500 font-semibold">Sections</div>
+    <nav class="flex-1 px-3 text-[13.5px] serif-body">
+      <a class="block px-3 py-2 border-l-[3px] border-rose-700 bg-white pl-3 -ml-px font-semibold">오늘 업무일지</a>
+      <a class="block px-3 py-2 text-slate-700 border-l-[3px] border-transparent hover:bg-white">내 이력</a>
+      <a class="block px-3 py-2 text-slate-700 border-l-[3px] border-transparent hover:bg-white">일일 취합본</a>
+      <a class="block px-3 py-2 text-slate-700 border-l-[3px] border-transparent hover:bg-white">주간 요약</a>
+      <a class="block px-3 py-2 text-slate-700 border-l-[3px] border-transparent hover:bg-white">사용자 관리</a>
+    </nav>
+    <div class="p-5 border-t-2 border-slate-900">
+      <div class="text-[10px] tracking-[0.25em] uppercase text-slate-500 mb-1.5 font-semibold">Editor</div>
+      <div class="serif-body text-[14px] font-semibold leading-tight">LNK 관리자</div>
+      <div class="text-[11px] text-slate-600 mt-0.5">생산팀 · ADMIN</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1">
+    <!-- Masthead -->
+    <div class="border-b-2 border-slate-900 px-12 py-7">
+      <div class="flex items-end justify-between">
+        <div>
+          <div class="text-[10px] tracking-[0.32em] uppercase text-rose-700 font-bold mb-2">Vol. 04 · Issue 30</div>
+          <h1 class="serif-display text-[52px] font-bold leading-[0.92] tracking-tight">오늘 업무일지</h1>
+          <div class="serif-body italic text-[15px] text-slate-700 mt-2">A daily ledger of production operations.</div>
+        </div>
+        <div class="text-right serif-body">
+          <div class="text-[11px] tracking-[0.2em] uppercase text-slate-500">Edition</div>
+          <div class="text-[20px] font-semibold num-mono">2026 · 04 · 30</div>
+          <div class="text-[12px] text-slate-600 italic mt-0.5">목요일 · Korea Standard Time</div>
+        </div>
+      </div>
+      <div class="rule-thick mt-5"></div>
+      <div class="border-t border-slate-900 mt-0.5 pt-2 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-slate-700 font-medium">
+        <span>Established 2026</span>
+        <span>· Production Department ·</span>
+        <span>Page 1 of 1</span>
+      </div>
+    </div>
+
+    <div class="px-12 py-9 max-w-[1100px]">
+
+      <!-- Tabs as section headings -->
+      <div class="flex items-baseline gap-6 mb-7">
+        <div class="serif-display text-[20px] font-bold border-b-[3px] border-rose-700 pb-1">Excel Paste</div>
+        <div class="serif-display text-[20px] font-bold text-slate-400">Manual Entry</div>
+        <div class="ml-auto text-[11px] tracking-[0.18em] uppercase text-slate-600">Section I — Capture</div>
+      </div>
+
+      <!-- Paste box -->
+      <section class="border-2 border-slate-900 bg-white mb-9">
+        <div class="px-5 py-2.5 border-b border-slate-900 bg-slate-900 text-white flex items-center justify-between">
+          <div class="text-[11.5px] tracking-[0.2em] uppercase font-semibold">Paste Region — 7 Columns</div>
+          <div class="text-[11px] num-mono">⌘ V</div>
+        </div>
+        <div class="px-8 py-12 text-center">
+          <div class="serif-body text-[18px] italic text-slate-700">"Paste your row from the spreadsheet here."</div>
+          <div class="text-[11.5px] mt-3 text-slate-500 tracking-[0.15em] uppercase">date · hours · category · no · status · detail · note</div>
+          <div class="mt-3 inline-block border-t border-slate-400 pt-2 text-[11px] text-slate-500 italic">병합 셀 자동 복원 · 다중 일자 일괄 처리</div>
+        </div>
+      </section>
+
+      <!-- Section heading -->
+      <div class="flex items-baseline gap-4 mb-3">
+        <div class="serif-display text-[26px] font-bold">The Day's Entries</div>
+        <div class="flex-1 border-t border-slate-900"></div>
+        <div class="text-[11px] tracking-[0.2em] uppercase text-slate-600">Section II — Review</div>
+      </div>
+      <div class="serif-body italic text-[13.5px] text-slate-600 mb-6">총 <span class="font-bold not-italic num-mono">2건</span>의 작성일과 <span class="font-bold not-italic num-mono">11건</span>의 업무가 자동으로 정리되었습니다.</div>
+
+      <!-- Day 1 -->
+      <article class="mb-9">
+        <header class="flex items-baseline justify-between border-b-2 border-slate-900 pb-2 mb-0">
+          <div class="flex items-baseline gap-4">
+            <h2 class="serif-display text-[28px] font-bold num-mono leading-none">2026 · 04 · 28</h2>
+            <span class="serif-body italic text-[13px] text-slate-600">월요일</span>
+          </div>
+          <div class="text-[11.5px] tracking-[0.18em] uppercase text-slate-700 font-semibold num-mono">Hours · 08:00–17:00</div>
+        </header>
+        <table class="w-full text-[13.5px] serif-body">
+          <thead class="text-[10px] tracking-[0.2em] uppercase text-slate-500">
+            <tr class="border-b border-slate-300">
+              <th class="text-left font-semibold py-2 w-12">No.</th>
+              <th class="text-left font-semibold py-2 w-44">Category</th>
+              <th class="text-left font-semibold py-2">Detail</th>
+              <th class="text-left font-semibold py-2 w-20">Status</th>
+              <th class="text-left font-semibold py-2 w-44">Note</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr><td class="py-3 num-mono text-slate-500">1—1</td><td class="font-semibold smallcaps text-slate-800">입·출고 관련업무</td><td class="py-3 leading-relaxed">SCM 입고 완료_입고증 2건 / IMP_2종 / CM건</td><td><span class="text-[11px] num-mono px-2 py-0.5 border border-emerald-700 text-emerald-800">DONE</span></td><td class="text-slate-400 italic">—</td></tr>
+            <tr><td class="py-3 num-mono text-slate-500">1—2</td><td class="font-semibold smallcaps text-slate-800">입·출고 관련업무</td><td class="py-3 leading-relaxed">멸균 2BOX_배차요청 및 입고</td><td><span class="text-[11px] num-mono px-2 py-0.5 border border-emerald-700 text-emerald-800">DONE</span></td><td class="text-slate-400 italic">—</td></tr>
+            <tr><td class="py-3 num-mono text-slate-500">2</td><td class="font-semibold smallcaps text-slate-800">DHR 관련 업무</td><td class="py-3 leading-relaxed">Cervical Plate_DHR 검토</td><td><span class="text-[11px] num-mono px-2 py-0.5 border border-rose-700 text-rose-700">WIP</span></td><td class="text-slate-400 italic">—</td></tr>
+            <tr><td class="py-3 num-mono text-slate-500">5</td><td class="font-semibold smallcaps text-slate-800">밸리데이션 관련 업무</td><td class="py-3 leading-relaxed">CNC_A타입 밸리데이션_Reduction Poly Head 1종 완료&gt;QA · 200EA 중 시료용 44EA 전달.</td><td><span class="text-[11px] num-mono px-2 py-0.5 border border-rose-700 text-rose-700">WIP</span></td><td class="text-slate-400 italic">—</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- Day 2 -->
+      <article class="mb-12">
+        <header class="flex items-baseline justify-between border-b-2 border-slate-900 pb-2">
+          <div class="flex items-baseline gap-4">
+            <h2 class="serif-display text-[28px] font-bold num-mono leading-none">2026 · 04 · 29</h2>
+            <span class="serif-body italic text-[13px] text-slate-600">화요일</span>
+          </div>
+          <div class="text-[11.5px] tracking-[0.18em] uppercase text-slate-700 font-semibold num-mono">Hours · 08:00–17:00</div>
+        </header>
+        <table class="w-full text-[13.5px] serif-body">
+          <tbody class="divide-y divide-slate-200">
+            <tr><td class="py-3 num-mono text-slate-500 w-12">3—1</td><td class="font-semibold smallcaps text-slate-800 w-44">생산의뢰서 관련 업무</td><td class="py-3 leading-relaxed">Bridge Plate Template (2종) 공정 입력</td><td class="w-20"><span class="text-[11px] num-mono px-2 py-0.5 border border-rose-700 text-rose-700">WIP</span></td><td class="w-44 italic text-rose-800">26.4.30 검사기준서 배포예정</td></tr>
+            <tr><td class="py-3 num-mono text-slate-500">3—2</td><td class="font-semibold smallcaps text-slate-800">생산의뢰서 관련 업무</td><td class="py-3 leading-relaxed">생산의뢰서 접수 및 파일 최신화_SCM 사본전달</td><td><span class="text-[11px] num-mono px-2 py-0.5 border border-emerald-700 text-emerald-800">DONE</span></td><td class="text-slate-400 italic">—</td></tr>
+            <tr><td class="py-3 num-mono text-slate-500">5</td><td class="font-semibold smallcaps text-slate-800">밸리데이션 관련 업무</td><td class="py-3 leading-relaxed">CNC_A타입 밸리데이션_Reduction Poly Head 1종 완료&gt;QA</td><td><span class="text-[11px] num-mono px-2 py-0.5 border border-emerald-700 text-emerald-800">DONE</span></td><td class="italic text-slate-700">밸리데이션 END</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- Submit -->
+      <div class="border-t-2 border-slate-900 pt-5 flex items-center justify-between">
+        <div class="serif-body italic text-[13px] text-slate-600">검토 후 한 번에 등록합니다 — 모든 변경 이력은 시스템에 보존됩니다.</div>
+        <button class="px-7 py-3 bg-slate-900 text-white serif-display text-[15px] tracking-wide hover:bg-rose-800 transition">Submit Entries ▸</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-slate-900 mt-10 px-12 py-5 text-[10.5px] tracking-[0.18em] uppercase text-slate-600 flex items-center justify-between bg-[#F5F2E8]">
+      <span>L&K Biomed Daily Operations Ledger</span>
+      <span class="serif-body italic normal-case tracking-normal">— Daily Operations Ledger —</span>
+      <span>Page 1 / 1</span>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

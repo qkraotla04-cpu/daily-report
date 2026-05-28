@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>1. Modern Minimal — 업무일지</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; }
+  .num-mono { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body class="bg-white text-slate-900">
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-60 border-r border-slate-200/80 bg-slate-50/40 flex flex-col">
+    <div class="px-6 pt-7 pb-8">
+      <div class="text-[15px] font-semibold tracking-tight">L&K Biomed</div>
+      <div class="text-xs text-slate-500 mt-0.5">업무일지 시스템</div>
+    </div>
+    <nav class="flex-1 px-3 space-y-0.5 text-[13.5px]">
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 text-indigo-700 font-medium">
+        <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>오늘 업무일지
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100">내 이력</a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100">일일 취합본</a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100">주간 요약</a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100">사용자 관리</a>
+    </nav>
+    <div class="p-4 border-t border-slate-200/70">
+      <div class="text-[11px] text-slate-400 mb-1.5">생산팀</div>
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 text-white text-xs flex items-center justify-center font-semibold">관</div>
+        <div>
+          <div class="text-[13px] font-medium leading-tight">LNK 관리자</div>
+          <div class="text-[11px] text-slate-400">관리자</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 px-12 py-10 max-w-[1100px]">
+    <header class="mb-10">
+      <div class="text-[11px] uppercase tracking-[0.18em] text-indigo-600 font-semibold mb-3">Daily Report</div>
+      <h1 class="text-[32px] font-semibold tracking-tight leading-tight">오늘 업무일지</h1>
+      <div class="mt-2.5 text-sm text-slate-500 flex items-center gap-3">
+        <span class="num-mono">2026.04.30 · 목요일</span>
+        <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+        <span>LNK 관리자</span>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="flex gap-1 mb-7 border-b border-slate-200">
+      <button class="px-4 py-2.5 text-[13.5px] font-medium border-b-2 border-indigo-600 text-indigo-600 -mb-px">엑셀 붙여넣기</button>
+      <button class="px-4 py-2.5 text-[13.5px] text-slate-500 hover:text-slate-700">직접 입력</button>
+    </div>
+
+    <!-- Paste area -->
+    <section class="rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-7 mb-6">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <div class="text-[14.5px] font-medium">엑셀 행 붙여넣기</div>
+          <div class="text-[12.5px] text-slate-500 mt-0.5">7개 열 · 작성일 / 근무시간 / 업무명 / NO. / 진행상태 / 상세내용 / 이슈</div>
+        </div>
+        <span class="text-[11px] px-2 py-1 rounded-md bg-slate-100 text-slate-600 font-medium num-mono">Ctrl + V</span>
+      </div>
+      <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50/40 px-5 py-9 text-center">
+        <div class="text-[13.5px] text-slate-600">엑셀에서 본인 행 전체를 복사 → 여기에 <span class="font-semibold">Ctrl+V</span></div>
+        <div class="text-[12px] text-slate-400 mt-1.5">병합 셀 자동 분해 · 다중 일자 일괄 처리</div>
+      </div>
+    </section>
+
+    <!-- Preview cards -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-[13px] text-slate-500">미리보기 · <span class="num-mono text-slate-700 font-medium">2건</span> 일자 · <span class="num-mono text-slate-700 font-medium">11</span> 업무</div>
+      <button class="text-[13px] px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800 font-medium">전체 제출</button>
+    </div>
+
+    <!-- Day card -->
+    <article class="rounded-2xl border border-slate-200 bg-white mb-5 overflow-hidden">
+      <header class="px-7 py-4 border-b border-slate-100 flex items-baseline justify-between">
+        <div class="flex items-baseline gap-3">
+          <h2 class="text-lg font-semibold tracking-tight num-mono">2026.04.28</h2>
+          <span class="text-xs text-slate-400 num-mono">월요일</span>
+        </div>
+        <span class="text-[12px] text-slate-500 num-mono">8:00 — 17:00</span>
+      </header>
+      <div class="divide-y divide-slate-100">
+        <!-- Task -->
+        <div class="px-7 py-4 flex gap-5 items-start">
+          <div class="num-mono text-[12px] text-slate-400 w-10 pt-0.5">1-1</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">입·출고 관련업무</div>
+            <div class="text-[14px] mt-1 leading-relaxed">SCM 입고 완료_입고증 2건 / IMP_2종 / CM건</div>
+          </div>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 font-medium">완료</span>
+        </div>
+        <div class="px-7 py-4 flex gap-5 items-start">
+          <div class="num-mono text-[12px] text-slate-400 w-10 pt-0.5">1-2</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">입·출고 관련업무</div>
+            <div class="text-[14px] mt-1 leading-relaxed">멸균 2BOX_배차요청 및 입고</div>
+          </div>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 font-medium">완료</span>
+        </div>
+        <div class="px-7 py-4 flex gap-5 items-start">
+          <div class="num-mono text-[12px] text-slate-400 w-10 pt-0.5">2</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">DHR 관련 업무</div>
+            <div class="text-[14px] mt-1 leading-relaxed">Cervical Plate_DHR 검토</div>
+          </div>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 border border-amber-100 font-medium">진행중</span>
+        </div>
+        <div class="px-7 py-4 flex gap-5 items-start">
+          <div class="num-mono text-[12px] text-slate-400 w-10 pt-0.5">5</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">밸리데이션 관련 업무</div>
+            <div class="text-[14px] mt-1 leading-relaxed whitespace-pre-line">CNC_A타입 밸리데이션_Reduction Poly Head 1종 완료&gt;QA
+생산 200EA중 시료용 작지발행 후 44EA 작성 후 QA 전달</div>
+          </div>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 border border-amber-100 font-medium">진행중</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-2xl border border-slate-200 bg-white mb-10 overflow-hidden">
+      <header class="px-7 py-4 border-b border-slate-100 flex items-baseline justify-between">
+        <div class="flex items-baseline gap-3">
+          <h2 class="text-lg font-semibold tracking-tight num-mono">2026.04.29</h2>
+          <span class="text-xs text-slate-400 num-mono">화요일</span>
+        </div>
+        <span class="text-[12px] text-slate-500 num-mono">8:00 — 17:00</span>
+      </header>
+      <div class="divide-y divide-slate-100">
+        <div class="px-7 py-4 flex gap-5 items-start">
+          <div class="num-mono text-[12px] text-slate-400 w-10 pt-0.5">3-1</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">생산의뢰서 관련 업무</div>
+            <div class="text-[14px] mt-1 leading-relaxed">Bridge Plate Template (2종) 공정 입력</div>
+            <div class="mt-1.5 text-[11.5px] text-rose-600 flex items-center gap-1.5">
+              <span class="w-1 h-1 rounded-full bg-rose-500"></span>
+              26.4.30 검사기준서 배포예정
+            </div>
+          </div>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 border border-amber-100 font-medium">진행중</span>
+        </div>
+        <div class="px-7 py-4 flex gap-5 items-start">
+          <div class="num-mono text-[12px] text-slate-400 w-10 pt-0.5">5</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">밸리데이션 관련 업무</div>
+            <div class="text-[14px] mt-1 leading-relaxed whitespace-pre-line">CNC_A타입 밸리데이션_Reduction Poly Head 1종 완료&gt;QA
+생산 200EA중 시료용 작지발행 후 44EA 작성 후 QA 전달</div>
+            <div class="mt-1.5 text-[11.5px] text-slate-500 flex items-center gap-1.5">
+              <span class="w-1 h-1 rounded-full bg-slate-400"></span>
+              밸리데이션 END
+            </div>
+          </div>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 font-medium">완료</span>
+        </div>
+      </div>
+    </article>
+  </main>
+</div>
+</body>
+</html>

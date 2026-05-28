@@ -1,0 +1,168 @@
+// 업무일지 자동화 시스템 - DB 스키마 (최종본)
+// 대상: L&K Biomed 생산팀 10명 미만
+// 기반: 실제 운영 엑셀 양식 (생산팀 일일업무 보고 취합본)
+// 운영: soft delete, 변경 이력, LOT/수량 추출
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ========================================
+// 사용자 (10명 미만, 3개 역할로 단순화)
+// ========================================
+
+model User {
+  id            Int       @id @default(autoincrement())
+  employeeNo    String    @unique @map("employee_no")
+  name          String
+  passwordHash  String    @map("password_hash")
+  role          String                                  // ADMIN / TEAM_LEAD / MEMBER
+  team          String                                  // 생산팀 / 외주팀 등
+  email         String?
+  isActive      Boolean   @default(true) @map("is_active")
+
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  reports         DailyReport[]
+  approvedReports DailyReport[] @relation("ApprovedBy")
+  auditLogs       AuditLog[]
+  weeklySummaries WeeklySummary[]
+
+  @@map("users")
+}
+
+// ========================================
+// 일일 업무일지 헤더
+// 실제 엑셀 열 구조 그대로 반영
+// ========================================
+
+model DailyReport {
+  id            Int       @id @default(autoincrement())
+  userId        Int       @map("user_id")
+  reportDate    DateTime  @map("report_date")          // 작성일
+
+  workHours     String?   @map("work_hours")           // 근무시간 "8:00 ~ 17:00"
+
+  // 엑셀 양식의 자유 텍스트 필드 (그대로)
+  tomorrowPlan  String?   @map("tomorrow_plan")        // 명일 진행 예정
+  issues        String?                                 // 이슈 및 특이사항
+  remarks       String?                                 // 비고 (부장님 지시사항)
+
+  // 입력 방식 추적 (분석용)
+  inputMethod   String    @default("PASTE") @map("input_method")
+                                                         // PASTE (엑셀 붙여넣기) / FORM (웹 폼)
+
+  // 상태
+  status        String    @default("DRAFT")             // DRAFT / SUBMITTED / APPROVED
+  submittedAt   DateTime? @map("submitted_at")
+  approvedById  Int?      @map("approved_by_id")
+  approvedAt    DateTime? @map("approved_at")
+
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  user          User        @relation(fields: [userId], references: [id])
+  approvedBy    User?       @relation("ApprovedBy", fields: [approvedById], references: [id])
+  tasks         WorkTask[]
+
+  @@unique([userId, reportDate])                        // 하루 한 건 제약
+  @@index([reportDate])
+  @@index([status])
+  @@map("daily_reports")
+}
+
+// ========================================
+// 업무 항목 (엑셀 "1." "2." "3." 각 행)
+// ========================================
+
+model WorkTask {
+  id            Int       @id @default(autoincrement())
+  reportId      Int       @map("report_id")
+
+  taskNo        Int       @map("task_no")               // 1, 2, 3 ...
+  category      String?                                  // PRODUCTION(생산이력) / MEETING(회의) / OUTSOURCING(외주) / QC / ETC
+  content       String                                   // 업무 내용 (서술형, 계층구조 포함)
+  status        String                                   // COMPLETED / IN_PROGRESS / ON_HOLD
+
+  // 자동 추출 (정규식)
+  extractedLots String?   @map("extracted_lots")         // 추출된 LOT 번호 (쉼표 구분)
+  extractedQtys String?   @map("extracted_quantities")   // 추출된 수량 (JSON)
+
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  report        DailyReport @relation(fields: [reportId], references: [id])
+
+  @@index([reportId])
+  @@index([status])
+  @@index([extractedLots])
+  @@map("work_tasks")
+}
+
+// ========================================
+// 주간 요약 (AI 수동 생성 결과 저장)
+// 팀장이 Claude.ai에서 만들어 붙여넣은 요약문 보관
+// ========================================
+
+model WeeklySummary {
+  id            Int       @id @default(autoincrement())
+  weekStart     DateTime  @map("week_start")            // 월요일 날짜
+  weekEnd       DateTime  @map("week_end")              // 금요일 날짜
+  team          String                                   // 생산팀 등
+  createdById   Int       @map("created_by_id")          // 팀장 ID
+
+  // AI 생성 본문 (Claude.ai에서 붙여넣은 텍스트)
+  summaryText   String    @map("summary_text")
+
+  // 규칙 기반 집계 (자동 계산, 참고용 스냅샷)
+  totalReports  Int       @default(0) @map("total_reports")
+  totalTasks    Int       @default(0) @map("total_tasks")
+  completedCount Int      @default(0) @map("completed_count")
+  inProgressCount Int     @default(0) @map("in_progress_count")
+  issueCount    Int       @default(0) @map("issue_count")
+  missingReports String?  @map("missing_reports")        // 미제출자 목록 (JSON)
+
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  createdBy     User      @relation(fields: [createdById], references: [id])
+
+  @@unique([weekStart, team])                            // 팀별 주간 한 건
+  @@index([weekStart])
+  @@map("weekly_summaries")
+}
+
+// ========================================
+// 업무 변경 이력
+// ========================================
+
+model AuditLog {
+  id            Int       @id @default(autoincrement())
+  userId        Int?      @map("user_id")
+  tableName     String    @map("table_name")
+  recordId      Int       @map("record_id")
+  action        String                                   // CREATE / UPDATE / DELETE
+  oldValue      String?   @map("old_value")              // JSON
+  newValue      String?   @map("new_value")              // JSON
+  ipAddress     String?   @map("ip_address")
+  userAgent     String?   @map("user_agent")
+
+  changedAt     DateTime  @default(now()) @map("changed_at")
+
+  user          User?     @relation(fields: [userId], references: [id])
+
+  @@index([tableName, recordId])
+  @@index([userId])
+  @@index([changedAt])
+  @@map("audit_logs")
+}

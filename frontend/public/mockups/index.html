@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>L&K Biomed 업무일지 — 디자인 컨셉 4안</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; }
+  .serif { font-family: 'Playfair Display', serif; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+<div class="max-w-6xl mx-auto px-8 py-12">
+
+  <header class="mb-12">
+    <div class="text-[11px] uppercase tracking-[0.22em] text-indigo-600 font-bold mb-2">Design Concepts · v1</div>
+    <h1 class="text-[40px] font-bold tracking-tight leading-tight">업무일지 시스템 — 디자인 컨셉 4안</h1>
+    <p class="text-slate-600 mt-2 text-[15px]">동일한 「오늘 업무일지」 화면을 4가지 다른 디자인 언어로 표현했습니다. 카드를 클릭해서 풀화면으로 보세요.</p>
+  </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- 01 -->
+    <a href="01-modern-minimal.html" class="group block rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition">
+      <div class="h-56 bg-gradient-to-br from-white to-slate-100 relative overflow-hidden border-b border-slate-100">
+        <div class="absolute inset-x-6 top-6">
+          <div class="text-[8px] uppercase tracking-[0.25em] text-indigo-600 font-semibold">Daily Report</div>
+          <div class="text-2xl font-semibold tracking-tight mt-1">오늘 업무일지</div>
+          <div class="mt-3 flex gap-1.5">
+            <div class="px-2 py-0.5 rounded text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-100">완료</div>
+            <div class="px-2 py-0.5 rounded text-[9px] bg-amber-50 text-amber-700 border border-amber-100">진행중</div>
+          </div>
+          <div class="mt-3 h-1 w-12 bg-indigo-600 rounded"></div>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-[10px] uppercase tracking-[0.22em] text-slate-400 font-semibold">01</span>
+          <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+          <span class="text-[11px] text-indigo-600 font-semibold">Modern Minimal</span>
+        </div>
+        <div class="text-[19px] font-semibold tracking-tight mb-1.5">미니멀 · 화이트 + 인디고</div>
+        <div class="text-[13.5px] text-slate-600 leading-relaxed">큰 여백, 산세리프, 미세한 보더. Linear / Notion 같은 현대적인 SaaS 톤. 가장 무난하고 오래 쓰기 좋은 안.</div>
+      </div>
+    </a>
+
+    <!-- 02 -->
+    <a href="02-dark-enterprise.html" class="group block rounded-2xl border border-slate-200 bg-[#0A0E1A] overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition">
+      <div class="h-56 relative overflow-hidden border-b border-white/5" style="background-image: linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 100% 16px;">
+        <div class="absolute inset-x-6 top-6">
+          <div class="text-[8px] uppercase tracking-[0.25em] text-amber-400/90 font-bold">▎Daily Report</div>
+          <div class="text-2xl font-semibold tracking-tight mt-1 text-white">오늘 업무일지<span class="text-amber-400/60 ml-2 text-base font-normal">2026.04.30</span></div>
+          <div class="mt-3 flex gap-1.5">
+            <div class="px-2 py-0.5 rounded text-[9px] bg-emerald-400/10 text-emerald-300 border border-emerald-400/30 font-mono">DONE</div>
+            <div class="px-2 py-0.5 rounded text-[9px] bg-amber-400/10 text-amber-300 border border-amber-400/40 font-mono">WIP</div>
+          </div>
+          <div class="mt-3 h-px w-20" style="background:linear-gradient(90deg,rgba(245,158,11,0.6),rgba(245,158,11,0));"></div>
+        </div>
+      </div>
+      <div class="p-6 bg-[#070A14]">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-[10px] uppercase tracking-[0.22em] text-slate-500 font-semibold font-mono">02</span>
+          <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+          <span class="text-[11px] text-amber-400 font-semibold">Dark Enterprise</span>
+        </div>
+        <div class="text-[19px] font-semibold tracking-tight mb-1.5 text-white">다크 베이스 + 골드 액센트</div>
+        <div class="text-[13.5px] text-slate-400 leading-relaxed">데이터 밀도가 높고 모니터링 감성. Bloomberg / 트레이딩 데스크 풍. 장시간 모니터 응시에 눈이 편함.</div>
+      </div>
+    </a>
+
+    <!-- 03 -->
+    <a href="03-soft-glass.html" class="group block rounded-2xl border border-slate-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition" style="background:radial-gradient(ellipse 80% 60% at 8% 12%, rgba(139,92,246,0.28) 0%, rgba(139,92,246,0) 60%),radial-gradient(ellipse 70% 60% at 95% 8%, rgba(244,114,182,0.22) 0%, rgba(244,114,182,0) 55%),linear-gradient(180deg,#FAF8FF 0%,#EEF2FF 100%);">
+      <div class="h-56 relative overflow-hidden">
+        <div class="absolute inset-x-6 top-6">
+          <div class="inline-flex items-center gap-1.5 text-[9px] px-2 py-0.5 rounded-full bg-white/60 border border-white/70 backdrop-blur text-violet-700 font-medium">
+            <span class="w-1 h-1 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500"></span>2026.04.30
+          </div>
+          <div class="text-2xl font-bold tracking-tight mt-2" style="background:linear-gradient(90deg,#0F172A,#7C3AED,#DB2777);-webkit-background-clip:text;background-clip:text;color:transparent;">오늘 업무일지</div>
+          <div class="mt-3 flex gap-1.5">
+            <div class="px-2.5 py-0.5 rounded-full text-[9px] bg-emerald-100/80 text-emerald-700 border border-emerald-200/50 font-semibold">완료</div>
+            <div class="px-2.5 py-0.5 rounded-full text-[9px] bg-amber-100/80 text-amber-700 border border-amber-200/50 font-semibold">진행중</div>
+          </div>
+          <div class="mt-3 inline-block px-3 py-1.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-[11px] font-semibold shadow-lg shadow-violet-500/30">전체 제출</div>
+        </div>
+      </div>
+      <div class="p-6 bg-white/70 backdrop-blur border-t border-white/70">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-[10px] uppercase tracking-[0.22em] text-slate-400 font-semibold">03</span>
+          <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+          <span class="text-[11px] text-violet-600 font-semibold">Soft Glass</span>
+        </div>
+        <div class="text-[19px] font-semibold tracking-tight mb-1.5">그라디언트 + 글래스모피즘</div>
+        <div class="text-[13.5px] text-slate-600 leading-relaxed">부드러운 오로라 배경 + 반투명 카드 + 보라/핑크 액센트. Apple / Vercel 풍. 트렌디하고 친근.</div>
+      </div>
+    </a>
+
+    <!-- 04 -->
+    <a href="04-editorial-print.html" class="group block rounded-2xl border border-slate-900 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition" style="background:#FAFAF5;background-image: radial-gradient(rgba(30,58,138,0.025) 1px, transparent 1px); background-size: 4px 4px;">
+      <div class="h-56 relative overflow-hidden border-b-2 border-slate-900">
+        <div class="absolute inset-x-6 top-5">
+          <div class="text-[9px] uppercase tracking-[0.32em] text-rose-700 font-bold">Vol. 04 · Issue 30</div>
+          <div class="serif text-[28px] font-bold leading-none mt-1.5">오늘 업무일지</div>
+          <div class="text-[12px] italic text-slate-700 mt-1.5">A daily ledger of production operations.</div>
+          <div class="mt-3 h-1 w-full bg-slate-900 rounded-sm" style="background:#1E3A8A;"></div>
+          <div class="mt-1 border-t border-slate-900 pt-1 flex items-center justify-between text-[8px] tracking-[0.2em] uppercase text-slate-700 font-semibold">
+            <span>Estd. 2026</span><span>Production Dept.</span><span>p. 1</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-[10px] uppercase tracking-[0.22em] text-slate-400 font-semibold">04</span>
+          <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+          <span class="text-[11px] text-rose-700 font-semibold">Editorial Print</span>
+        </div>
+        <div class="text-[19px] font-semibold tracking-tight mb-1.5">신문 / 업무문서 풍</div>
+        <div class="text-[13.5px] text-slate-600 leading-relaxed">미색 종이 + 세리프 헤드라인 + 두꺼운 룰선 + 네이비/적색. FT / NYT 신문지 + 업무 기록 문서 풍. 격조있고 무게감 있음.</div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="mt-12 p-6 rounded-2xl bg-white border border-slate-200">
+    <div class="text-[12px] uppercase tracking-[0.2em] text-slate-500 font-semibold mb-2">한눈에 비교</div>
+    <table class="w-full text-[13px]">
+      <thead class="text-[11px] uppercase tracking-wider text-slate-500">
+        <tr class="border-b border-slate-200">
+          <th class="text-left font-semibold py-2">컨셉</th>
+          <th class="text-left font-semibold py-2">베이스</th>
+          <th class="text-left font-semibold py-2">액센트</th>
+          <th class="text-left font-semibold py-2">분위기</th>
+          <th class="text-left font-semibold py-2">정보 밀도</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-2.5 font-semibold">01 Modern Minimal</td><td>화이트</td><td>인디고</td><td>깔끔 · 미니멀</td><td>중</td></tr>
+        <tr><td class="py-2.5 font-semibold">02 Dark Enterprise</td><td>다크</td><td>골드 + 시아니</td><td>전문 · 데이터</td><td>고</td></tr>
+        <tr><td class="py-2.5 font-semibold">03 Soft Glass</td><td>오로라 그라디언트</td><td>보라 + 핑크</td><td>부드러움 · 트렌디</td><td>중</td></tr>
+        <tr><td class="py-2.5 font-semibold">04 Editorial Print</td><td>미색 종이</td><td>네이비 + 적색</td><td>격조 · 무게감</td><td>고</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
