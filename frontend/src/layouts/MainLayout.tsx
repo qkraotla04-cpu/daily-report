@@ -10,6 +10,7 @@ const PAGE_TITLES: Record<string, { code: string; label: string; titleMain: stri
   '/weekly':      { code: 'B.02', label: '주간 요약',     titleMain: '주간',   titleAccent: '요약',     sub: 'WEEKLY SUMMARY · DIGEST' },
   '/admin':                { code: 'C.01', label: '사용자 관리',   titleMain: '사용자', titleAccent: '관리',     sub: 'USER MANAGEMENT · ADMIN' },
   '/admin/member-history': { code: 'C.02', label: '팀원 업무 이력', titleMain: '팀원',   titleAccent: '업무 이력', sub: 'MEMBER HISTORY · ADMIN' },
+  '/admin/system':         { code: 'C.03', label: '시스템 현황',   titleMain: '시스템', titleAccent: '현황',     sub: 'SYSTEM STATUS · OPS' },
 }
 
 interface NavItem { code: string; to: string; label: string; roles: string[] }
@@ -21,6 +22,7 @@ const NAV: NavItem[] = [
   { code: 'B.02', to: '/weekly',      label: '주간 요약',     roles: ['ADMIN', 'TEAM_LEAD'] },
   { code: 'C.01', to: '/admin',                label: '사용자 관리',   roles: ['ADMIN'] },
   { code: 'C.02', to: '/admin/member-history', label: '팀원 업무 이력', roles: ['ADMIN'] },
+  { code: 'C.03', to: '/admin/system',         label: '시스템 현황',   roles: ['ADMIN'] },
 ]
 
 const DAYS = ['일', '월', '화', '수', '목', '금', '토']

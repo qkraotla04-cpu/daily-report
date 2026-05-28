@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express'
 import { z } from 'zod'
 import { authenticate } from '../../middleware/auth'
 import { parsePastedExcel } from './paste.parser'
+import { validateAndAnnotate } from './paste.validator'
 import { reportsService } from '../reports/reports.service'
 import { successResponse, errorResponse } from '../../utils/response'
 import { REPORT_EXCLUDED_NOS } from '../../config/report-exclusions'
@@ -23,7 +24,7 @@ const submitSchema = z.object({
 pasteRouter.post('/preview', async (req: Request, res: Response) => {
   try {
     const { text } = previewSchema.parse(req.body)
-    const parsed = parsePastedExcel(text)
+    const parsed = validateAndAnnotate(parsePastedExcel(text))
     res.json(successResponse(parsed))
   } catch (err) {
     if (err instanceof Error) {

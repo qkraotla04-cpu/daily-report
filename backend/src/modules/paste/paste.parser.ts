@@ -14,6 +14,7 @@ export interface ParsedTask {
   taskIssue: string | null
   extractedLots: string[]
   extractedQtys: string[]
+  warnings?: string[] // Quality warnings (populated by validator)
 }
 
 export interface ParsedDay {
@@ -410,7 +411,8 @@ export function extractLots(text: string): string[] {
 
 export function extractQtys(text: string): string[] {
   const found = new Set<string>()
-  const regex = /\d+(?:[.,]\d+)?\s*(?:개|EA|ea|건|kg|g|ml|L|박스|BOX|box|pcs|PCS)\b/g
+  // (?!\w) replaces \b: \b fails after Korean chars (non-word), (?!\w) works for both Latin and Korean units
+  const regex = /\d+(?:[.,]\d+)?\s*(?:개|EA|ea|건|kg|g|ml|L|박스|BOX|box|pcs|PCS)(?!\w)/g
   const matches = text.match(regex)
   if (matches) matches.forEach((m) => found.add(m.trim()))
   return Array.from(found)

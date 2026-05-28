@@ -49,6 +49,18 @@ export interface DailyReportFromServer extends Omit<DailyReportDto, 'tasks'> {
   }>
 }
 
+export interface ReportVersion {
+  replacedAt: string
+  taskCount: number
+  tasks: DailyReportFromServer['tasks']
+}
+
+export interface ReportVersionHistory {
+  report: DailyReportFromServer
+  currentTasks: DailyReportFromServer['tasks']
+  versions: ReportVersion[]
+}
+
 export const reportsApi = {
   async upsert(dto: DailyReportDto) {
     const { data } = await apiClient.post('/reports', dto)
@@ -72,5 +84,10 @@ export const reportsApi = {
 
   async deleteOne(id: number) {
     await apiClient.delete(`/reports/${id}`)
+  },
+
+  async getVersionHistory(reportId: number) {
+    const { data } = await apiClient.get(`/reports/me/versions/${reportId}`)
+    return data.data as ReportVersionHistory
   },
 }

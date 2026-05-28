@@ -1,4 +1,6 @@
 import bcrypt from 'bcrypt'
+import fs from 'fs'
+import path from 'path'
 import { prisma } from '../../config/prisma'
 import { CreateUserDto, UpdateUserDto } from './admin.types'
 
@@ -92,6 +94,48 @@ export const adminService = {
   },
 
   // List all non-deleted members for the member history filter
+  async getSystemStatus() {
+    const uptimeSec = Math.floor(process.uptime())
+    const mem = process.memoryUsage()
+
+    // DB file size
+    const dbPath = path.resolve(process.cwd(), 'prisma', 'dev.db')
+    let dbSizeBytes = 0
+    try {
+      dbSizeBytes = fs.statSync(dbPath).size
+    } catch {
+      dbSizeBytes = 0
+    }
+
+    const [userCount, reportCount, taskCount] = await Promise.all([
+      prisma.user.count({ where: { deletedAt: null } }),
+      prisma.dailyReport.count({ where: { deletedAt: null } }),
+      prisma.workTask.count({ where: { deletedAt: null } }),
+    ])
+
+    const hours = Math.floor(uptimeSec / 3600)
+    const mins = Math.floor((uptimeSec % 3600) / 60)
+    const secs = uptimeSec % 60
+
+    return {
+      uptime: { seconds: uptimeSec, label: `${hours}h ${mins}m ${secs}s` },
+      memory: {
+        rss: mem.rss,
+        heapUsed: mem.heapUsed,
+        heapTotal: mem.heapTotal,
+        rssMB: Math.round(mem.rss / 1024 / 1024),
+        heapUsedMB: Math.round(mem.heapUsed / 1024 / 1024),
+      },
+      database: {
+        sizeBytes: dbSizeBytes,
+        sizeMB: Math.round(dbSizeBytes / 1024 / 1024 * 10) / 10,
+        path: dbPath,
+      },
+      stats: { userCount, reportCount, taskCount },
+      runtime: { nodeVersion: process.version, platform: process.platform },
+    }
+  },
+
   async getMembers() {
     return prisma.user.findMany({
       where: { deletedAt: null },

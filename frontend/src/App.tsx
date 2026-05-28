@@ -10,6 +10,7 @@ import WeeklySummary from './pages/WeeklySummary'
 import Admin from './pages/Admin'
 import MemberHistory from './pages/MemberHistory'
 import PrintAggregation from './pages/PrintAggregation'
+import SystemStatus from './pages/SystemStatus'
 
 // 로그인 필요 가드
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -106,6 +107,14 @@ function AppRoutes() {
           element={
             <RoleRoute roles={['ADMIN']}>
               <MemberHistory />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="admin/system"
+          element={
+            <RoleRoute roles={['ADMIN']}>
+              <SystemStatus />
             </RoleRoute>
           }
         />

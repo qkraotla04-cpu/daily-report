@@ -21,6 +21,9 @@
 
 ## 운영 배포 (사내 단일 PC)
 - pm2 + pm2-windows-startup 로 부팅 시 자동 기동
+- **pm2 는 컴파일된 JS 실행**: `backend/dist/index.js` (TypeScript 소스가 아님)
+  - 백엔드 소스 수정 후 반드시: `cd backend && npm run build` → `pm2 restart daily-report`
+  - 빌드 없이 pm2 restart 만 하면 이전 컴파일 코드가 계속 실행됨
 - DB 백업: 일 1회 `backend/prisma/dev.db` → 파일서버 (작업 스케줄러)
 - **외부 고정 URL**: `https://operator-agony-itunes.ngrok-free.dev` (ngrok 무료 static domain)
   - tunnel 프로세스: pm2 `daily-report-tunnel` → ngrok http 4000 --url=...

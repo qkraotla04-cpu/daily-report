@@ -71,6 +71,12 @@ adminRouter.post('/users/:id/reset-password', async (req: Request, res: Response
   }
 })
 
+// GET /api/v1/admin/system — 시스템 운영 현황
+adminRouter.get('/system', async (_req: Request, res: Response) => {
+  const status = await adminService.getSystemStatus()
+  res.json(successResponse(status))
+})
+
 // GET /api/v1/admin/members — list all active members for dropdown
 adminRouter.get('/members', async (_req: Request, res: Response) => {
   const members = await adminService.getMembers()

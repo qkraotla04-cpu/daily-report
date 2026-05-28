@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useAuth } from '../contexts/AuthContext'
 import { weeklyApi, type WeeklyAggregate, type WeeklySummaryRecord } from '../api/weekly'
+import WeeklyInsightPanel from '../components/WeeklyInsightPanel'
 
 const PROMPT_TEMPLATE_BASIC = `다음은 우리 팀의 한 주간 업무일지입니다. 아래 요구사항에 맞춰 한국어로 주간 요약 보고서를 작성해주세요.
 
@@ -209,6 +210,11 @@ export default function WeeklySummary() {
 
       {/* ── Aggregate stats ── */}
       {agg && <AggregateCards agg={agg} />}
+
+      {/* ── Insight panel ── */}
+      <div className="mb-5">
+        <WeeklyInsightPanel weekStart={weekStart} team={team} />
+      </div>
 
       {saveSuccess && (
         <div

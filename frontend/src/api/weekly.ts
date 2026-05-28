@@ -33,6 +33,19 @@ export interface WeeklySummaryRecord {
   createdBy?: { id: number; name: string }
 }
 
+export interface WeeklyInsights {
+  longRunningTasks: {
+    userId: number
+    userName: string
+    category: string | null
+    contentPreview: string
+    weeksOngoing: number
+  }[]
+  repeatRate: number
+  lotUserMap: { lot: string; users: string[]; count: number }[]
+  submissionTrend: { thisWeek: number; lastWeek: number; delta: number }
+}
+
 export const weeklyApi = {
   async aggregate(weekStart: string, team?: string) {
     const { data } = await apiClient.get('/weekly/aggregate', {
@@ -86,5 +99,12 @@ export const weeklyApi = {
   async get(id: number) {
     const { data } = await apiClient.get(`/weekly/${id}`)
     return data.data as WeeklySummaryRecord
+  },
+
+  async getInsights(weekStart: string, team?: string) {
+    const { data } = await apiClient.get('/weekly/insights', {
+      params: { weekStart, ...(team ? { team } : {}) },
+    })
+    return data.data as WeeklyInsights
   },
 }

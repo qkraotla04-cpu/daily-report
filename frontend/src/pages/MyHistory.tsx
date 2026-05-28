@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { reportsApi, type DailyReportFromServer } from '../api/reports'
 import { dateToIso, startOfMonth, endOfMonth, formatKoreanDate } from '../utils/date'
+import ReportVersionPanel from '../components/ReportVersionPanel'
 
 const STATUS_LABEL: Record<string, { ko: string; cls: string }> = {
   COMPLETED: { ko: '완료', cls: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
@@ -211,6 +212,10 @@ export default function MyHistory() {
               )}
               {selectedReport.remarks && (
                 <DetailField label="비고" value={selectedReport.remarks} />
+              )}
+
+              {selectedReport.id && (
+                <ReportVersionPanel reportId={selectedReport.id} />
               )}
             </div>
           )}

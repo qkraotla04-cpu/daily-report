@@ -111,6 +111,40 @@ export const reportsService = {
     })
   },
 
+  async getReportVersionHistory(userId: number, reportId: number) {
+    const report = await prisma.dailyReport.findFirst({
+      where: { id: reportId, userId, deletedAt: null },
+    })
+    if (!report) throw new Error('NOT_FOUND')
+
+    const allTasks = await prisma.workTask.findMany({
+      where: { reportId },
+      orderBy: { id: 'asc' },
+    })
+
+    const currentTasks = allTasks.filter((t) => t.deletedAt === null)
+    const deletedTasks = allTasks.filter((t) => t.deletedAt !== null)
+
+    // Group deleted tasks by deletedAt truncated to the second
+    // (same-second deletions = same upsert batch = one historical version)
+    const batches = new Map<string, typeof allTasks>()
+    for (const task of deletedTasks) {
+      const key = task.deletedAt!.toISOString().slice(0, 19)
+      if (!batches.has(key)) batches.set(key, [])
+      batches.get(key)!.push(task)
+    }
+
+    const versions = Array.from(batches.entries())
+      .sort(([a], [b]) => b.localeCompare(a))
+      .map(([key, tasks]) => ({
+        replacedAt: key + 'Z',
+        taskCount: tasks.length,
+        tasks,
+      }))
+
+    return { report, currentTasks, versions }
+  },
+
   async deleteMine(userId: number, reportId: number) {
     const existing = await prisma.dailyReport.findFirst({
       where: { id: reportId, userId, deletedAt: null },

@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express'
 import { z } from 'zod'
 import { authenticate, requireRole } from '../../middleware/auth'
 import { weeklyService } from './weekly.service'
+import { getWeeklyInsights } from './weekly.insights'
 import { successResponse, errorResponse } from '../../utils/response'
 
 export const weeklyRouter = Router()
@@ -53,6 +54,18 @@ weeklyRouter.get('/auto-summary', async (req: Request, res: Response) => {
   const team = (req.query.team as string) || undefined
   const summary = await weeklyService.generateAutoSummary(parsed.data, team)
   res.json(successResponse({ summary }))
+})
+
+// GET /api/v1/weekly/insights?weekStart=YYYY-MM-DD&team=생산팀
+weeklyRouter.get('/insights', async (req: Request, res: Response) => {
+  const parsed = weekStartSchema.safeParse(req.query.weekStart)
+  if (!parsed.success) {
+    res.status(400).json(errorResponse('MISSING_PARAMS', 'weekStart 파라미터가 필요합니다.'))
+    return
+  }
+  const team = (req.query.team as string) || undefined
+  const insights = await getWeeklyInsights(parsed.data, team)
+  res.json(successResponse(insights))
 })
 
 // POST /api/v1/weekly - AI 요약 저장

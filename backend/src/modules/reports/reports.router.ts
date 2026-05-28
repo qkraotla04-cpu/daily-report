@@ -44,6 +44,21 @@ reportsRouter.get('/me', async (req: Request, res: Response) => {
   res.json(successResponse(result))
 })
 
+// GET /api/v1/reports/me/versions/:id - 수정 이력 조회
+reportsRouter.get('/me/versions/:id', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id, 10)
+    const result = await reportsService.getReportVersionHistory(req.user.userId, id)
+    res.json(successResponse(result))
+  } catch (err) {
+    if (err instanceof Error && err.message === 'NOT_FOUND') {
+      res.status(404).json(errorResponse('NOT_FOUND', '일지를 찾을 수 없습니다.'))
+      return
+    }
+    throw err
+  }
+})
+
 // DELETE /api/v1/reports/:id - 본인 일지 soft delete
 reportsRouter.delete('/:id', async (req: Request, res: Response) => {
   try {
