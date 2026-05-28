@@ -7,7 +7,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '../contexts/AuthContext'
 import { aggregationApi, type AggregationRow } from '../api/aggregation'
 import { reportsApi } from '../api/reports'
-import { todayIso, dateToIso, startOfMonth, endOfMonth } from '../utils/date'
+import { todayIso } from '../utils/date'
+import PersonalStats from '../components/PersonalStats'
 
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 
@@ -38,15 +39,6 @@ export default function Dashboard() {
     queryFn: () => reportsApi.getMyToday(),
   })
 
-  // This month's personal history
-  const now = new Date()
-  const monthStart = dateToIso(startOfMonth(now))
-  const monthEnd = dateToIso(endOfMonth(now))
-  const myMonthQ = useQuery({
-    queryKey: ['reports', 'me', 'history', monthStart, monthEnd],
-    queryFn: () => reportsApi.getMyHistory(monthStart, monthEnd),
-  })
-
   // Team aggregation (ADMIN / TEAM_LEAD only)
   const aggQ = useQuery({
     queryKey: ['aggregation', 'daily', today],
@@ -55,7 +47,6 @@ export default function Dashboard() {
   })
 
   const myReport = myTodayQ.data
-  const myMonthReports = myMonthQ.data ?? []
   const aggRows: AggregationRow[] = aggQ.data?.rows ?? []
 
   // Team stats
@@ -64,12 +55,6 @@ export default function Dashboard() {
   const totalTasks = useMemo(
     () => submitted.reduce((s, r) => s + (r.report?.tasks.length ?? 0), 0),
     [submitted]
-  )
-
-  // Personal month stats
-  const myTotalTasks = useMemo(
-    () => myMonthReports.reduce((s, r) => s + r.tasks.length, 0),
-    [myMonthReports]
   )
 
   return (
@@ -99,31 +84,9 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* ── Personal month stats — KPI Strip ── */}
-      <div className="relative border-[1.5px] border-ink grid grid-cols-3 mb-8" style={{ background: 'var(--v2-paper)' }}>
-        {/* Floating label above the top border */}
-        <div style={{ position: 'absolute', top: -8, left: 16, background: 'var(--v2-cream)', padding: '0 8px', fontFamily: 'var(--v2-font-mono)', fontSize: 8.5, letterSpacing: '0.24em', color: 'var(--v2-ink-muted)', fontWeight: 700, textTransform: 'uppercase', pointerEvents: 'none' }}>
-          PERSONAL · MONTHLY METRICS
-        </div>
-        <StatBox
-          label="이번달 제출일"
-          value={String(myMonthReports.length)}
-          unit="일"
-          color="var(--v2-accent)"
-        />
-        <StatBox
-          label="이번달 업무"
-          value={String(myTotalTasks)}
-          unit="건"
-          color="var(--v2-state-done)"
-        />
-        <StatBox
-          label="오늘 상태"
-          value={myReport ? '제출완료' : '미제출'}
-          unit=""
-          color={myReport ? 'var(--v2-state-done)' : 'var(--v2-ink)'}
-          small
-        />
+      {/* ── Personal stats — weekly + monthly, clickable drill-down ── */}
+      <div className="mb-8">
+        <PersonalStats />
       </div>
 
       {/* ── Team overview (ADMIN / TEAM_LEAD only) ── */}
@@ -277,37 +240,6 @@ function LoadingCard() {
   return (
     <div className="ed-card p-5">
       <div className="font-mono text-[11px] text-ink-faint uppercase tracking-wider">로딩 중…</div>
-    </div>
-  )
-}
-
-function StatBox({
-  label,
-  value,
-  unit,
-  color,
-  small,
-}: {
-  label: string
-  value: string
-  unit: string
-  color: string
-  small?: boolean
-}) {
-  return (
-    <div className="p-4 border-r border-line last:border-r-0">
-      <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint font-bold mb-2">
-        {label}
-      </div>
-      <div
-        className={`num-mono leading-none ${small ? 'text-[20px]' : 'text-[32px]'}`}
-        style={{ color, fontWeight: 900, letterSpacing: '-0.03em' }}
-      >
-        {value}
-        {unit && (
-          <span className="font-mono text-[11px] text-ink-faint ml-1.5">{unit}</span>
-        )}
-      </div>
     </div>
   )
 }

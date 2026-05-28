@@ -30,3 +30,15 @@ export function startOfMonth(d: Date): Date {
 export function endOfMonth(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth() + 1, 0)
 }
+
+// Week starts on Monday
+export function startOfWeek(d: Date): Date {
+  const day = d.getDay()
+  const diff = day === 0 ? -6 : 1 - day
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff)
+}
+
+export function endOfWeek(d: Date): Date {
+  const start = startOfWeek(d)
+  return new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6)
+}

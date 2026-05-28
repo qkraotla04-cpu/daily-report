@@ -16,6 +16,7 @@ const PAGE_TITLES: Record<string, { code: string; label: string; titleMain: stri
 interface NavItem { code: string; to: string; label: string; roles: string[] }
 
 const NAV: NavItem[] = [
+  { code: 'A.00', to: '/',            label: '대시보드',      roles: ['ADMIN', 'TEAM_LEAD', 'MEMBER'] },
   { code: 'A.01', to: '/daily',       label: '오늘 업무일지', roles: ['ADMIN', 'TEAM_LEAD', 'MEMBER'] },
   { code: 'A.02', to: '/my-history',  label: '내 이력',       roles: ['ADMIN', 'TEAM_LEAD', 'MEMBER'] },
   { code: 'B.01', to: '/aggregation', label: '일일 취합본',   roles: ['ADMIN', 'TEAM_LEAD'] },

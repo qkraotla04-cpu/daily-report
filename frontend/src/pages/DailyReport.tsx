@@ -5,6 +5,7 @@ import { pasteApi, type ParsedDay } from '../api/paste'
 import PasteDropzone from '../components/PasteDropzone'
 import DirectEntryForm from '../components/DirectEntryForm'
 import PastePreviewTable from '../components/PastePreviewTable'
+import PersonalStats from '../components/PersonalStats'
 
 type Tab = 'PASTE' | 'FORM'
 
@@ -69,6 +70,11 @@ export default function DailyReport() {
 
   return (
     <div className="max-w-[1100px]">
+      {/* ── Personal stats dashboard at top ── */}
+      <div className="mb-6">
+        <PersonalStats compact />
+      </div>
+
       <div className="v2-divider mb-6"><span>Entry</span></div>
 
       {/* Tabs */}
