@@ -201,8 +201,8 @@ export default function MainLayout() {
         {/* 페이지 헤더 */}
         <div style={{ flexShrink: 0, background: headerBg, backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'stretch', borderBottom: '2px solid var(--v2-ink)', minHeight: 102, zIndex: 29 }}>
 
-          {/* 레퍼런스 라인(상단) + 타이틀(하단) */}
-          <div style={{ flex: 1, padding: '10px 24px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
+          {/* 레퍼런스 라인 + 타이틀 — 상하 중앙 정렬 */}
+          <div style={{ flex: 1, padding: '10px 24px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 10, minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--v2-font-mono)', fontSize: 8.5, letterSpacing: '0.22em', color: 'var(--v2-ink-faint)', fontWeight: 700 }}>
               <span style={{ display: 'inline-block', width: 18, height: 1.5, background: 'var(--v2-accent)', flexShrink: 0 }} />
               DR · SYS · {pageInfo.code} · REV A
