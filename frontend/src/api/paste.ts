@@ -10,6 +10,7 @@ export interface ParsedTask {
   taskIssue: string | null
   extractedLots: string[]
   extractedQtys: string[]
+  warnings?: string[] // Quality check results from server-side validator
 }
 
 export interface ParsedDay {

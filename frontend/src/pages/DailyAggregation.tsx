@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { aggregationApi, type AggregationRow } from '../api/aggregation'
 import { todayIso } from '../utils/date'
@@ -19,10 +19,13 @@ function dateLine(iso: string) {
   }
 }
 
+type FilterMode = 'all' | 'missing' | 'in_progress' | 'has_issue'
+
 export default function DailyAggregation() {
   const [date, setDate] = useState(todayIso())
   const [downloading, setDownloading] = useState(false)
   const [downloadError, setDownloadError] = useState('')
+  const [filterMode, setFilterMode] = useState<FilterMode>('all')
 
   const aggQuery = useQuery({
     queryKey: ['aggregation', 'daily', date],
@@ -37,6 +40,19 @@ export default function DailyAggregation() {
   const missingCount = totalCount - submittedCount
   const totalTasks = rows.reduce((s, r) => s + (r.report?.tasks.length ?? 0), 0)
   const dl = dateLine(date)
+
+  // Filter counts (computed from full rows)
+  const inProgressCount = rows.filter((r) => r.report?.tasks.some((t) => t.status === 'IN_PROGRESS')).length
+  const issueCount = rows.filter((r) => r.report?.tasks.some((t) => t.taskIssue)).length
+
+  const filteredRows = useMemo(() => {
+    switch (filterMode) {
+      case 'missing':     return rows.filter((r) => !r.report)
+      case 'in_progress': return rows.filter((r) => r.report?.tasks.some((t) => t.status === 'IN_PROGRESS'))
+      case 'has_issue':   return rows.filter((r) => r.report?.tasks.some((t) => t.taskIssue))
+      default:            return rows
+    }
+  }, [rows, filterMode])
 
   const handleDownload = async () => {
     setDownloadError('')
@@ -82,7 +98,7 @@ export default function DailyAggregation() {
         </div>
       </header>
 
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-4 gap-3 mb-4">
         <SummaryCard label="대상 인원" value={totalCount} />
         <SummaryCard label="제출" value={submittedCount} accent="emerald" />
         <SummaryCard
@@ -91,6 +107,33 @@ export default function DailyAggregation() {
           accent={missingCount > 0 ? 'rose' : undefined}
         />
         <SummaryCard label="총 업무" value={totalTasks} />
+      </div>
+
+      {/* Filter chips */}
+      <div className="flex gap-2 mb-5 flex-wrap">
+        {([
+          { key: 'all',         label: '전체',       count: totalCount },
+          { key: 'missing',     label: '미제출만',    count: missingCount },
+          { key: 'in_progress', label: '진행중 있음', count: inProgressCount },
+          { key: 'has_issue',   label: '이슈 있음',   count: issueCount },
+        ] as { key: FilterMode; label: string; count: number }[]).map(({ key, label, count }) => (
+          <button
+            key={key}
+            onClick={() => setFilterMode(key)}
+            className={`text-[12px] px-3 py-1.5 rounded-lg border font-semibold transition-colors num-mono ${
+              filterMode === key
+                ? 'bg-slate-900 text-white border-slate-900'
+                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            {label} <span className="opacity-60 ml-0.5">{count}</span>
+          </button>
+        ))}
+        {filterMode !== 'all' && (
+          <span className="text-[12px] text-slate-400 self-center num-mono">
+            → {filteredRows.length}명 표시 중
+          </span>
+        )}
       </div>
 
       {downloadError && (
@@ -102,8 +145,10 @@ export default function DailyAggregation() {
       <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         {aggQuery.isLoading ? (
           <p className="text-[13px] text-slate-400 text-center py-16">불러오는 중...</p>
-        ) : rows.length === 0 ? (
-          <p className="text-[13px] text-slate-400 text-center py-16">대상 사용자가 없습니다.</p>
+        ) : filteredRows.length === 0 ? (
+          <p className="text-[13px] text-slate-400 text-center py-16">
+            {rows.length === 0 ? '대상 사용자가 없습니다.' : '조건에 맞는 항목이 없습니다.'}
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-[14px]">
@@ -120,7 +165,7 @@ export default function DailyAggregation() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {rows.map((row, idx) => (
+                {filteredRows.map((row, idx) => (
                   <UserBlock key={row.user.id} row={row} idx={idx + 1} />
                 ))}
               </tbody>

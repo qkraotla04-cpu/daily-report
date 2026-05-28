@@ -79,6 +79,7 @@ export default function DailyReport() {
     (s, d) => s + d.tasks.filter((t) => t.status === 'IN_PROGRESS').length,
     0
   )
+  const warnings = previewMutation.data?.warnings ?? []
 
   return (
     <div className="max-w-[1100px]">
@@ -169,6 +170,27 @@ export default function DailyReport() {
             </div>
           )}
 
+          {/* Quality warnings banner */}
+          {warnings.length > 0 && (
+            <details
+              className="mb-5 border border-amber-200 overflow-hidden"
+              style={{ borderRadius: '3px' }}
+              open={warnings.length <= 4}
+            >
+              <summary className="cursor-pointer px-4 py-2.5 bg-amber-50 border-b border-amber-100 flex items-center gap-2 text-[13px] font-semibold text-amber-800 list-none select-none">
+                <span>⚠ 품질 경고 {warnings.length}건 — 제출 전 확인 권장</span>
+              </summary>
+              <ul className="bg-amber-50/60 px-4 py-3 space-y-1">
+                {warnings.map((w, i) => (
+                  <li key={i} className="text-[12px] text-amber-700 flex items-start gap-2 font-mono">
+                    <span className="mt-[5px] w-1 h-1 rounded-full bg-amber-500 flex-shrink-0" />
+                    {w}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+
           {days.map((day) => (
             <DayCard key={day.reportDate} day={day} />
           ))}
@@ -203,6 +225,7 @@ function TabBtn({
 
 function DayCard({ day }: { day: ParsedDay }) {
   const d = dateLine(day.reportDate)
+  const warnCount = day.tasks.reduce((s, t) => s + (t.warnings?.length ?? 0), 0)
   return (
     <article className="relative bg-paper mb-5 overflow-hidden border-[1.5px] border-ink" style={{borderRadius:'3px'}}>
       <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent" aria-hidden="true" />
@@ -211,6 +234,11 @@ function DayCard({ day }: { day: ParsedDay }) {
           <h2 className="font-sans font-bold text-[20px] tracking-[-0.03em] num-mono text-ink">{d.md}</h2>
           <span className="text-[12px] font-mono uppercase tracking-[0.12em] text-ink-muted">{d.w}</span>
           <span className="v2-pill v2-pill-accent">{day.tasks.length} TASKS</span>
+          {warnCount > 0 && (
+            <span className="text-[10px] font-mono px-2 py-0.5 bg-amber-100 text-amber-700 border border-amber-200" style={{borderRadius:'2px'}}>
+              ⚠ {warnCount}
+            </span>
+          )}
         </div>
         <span className="text-[11px] font-mono tracking-wider text-ink-muted num-mono uppercase">{day.workHours ?? '—'}</span>
       </header>
@@ -240,6 +268,15 @@ function TaskRow({ task }: { task: ParsedTask }) {
           <div className="mt-2 text-[12px] text-accent flex items-center gap-1.5">
             <span className="w-1 h-1 rounded-full bg-accent" />
             {task.taskIssue}
+          </div>
+        )}
+        {task.warnings && task.warnings.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-1">
+            {task.warnings.map((w, i) => (
+              <span key={i} className="text-[10px] px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 font-mono" style={{borderRadius:'2px'}}>
+                ⚠ {w}
+              </span>
+            ))}
           </div>
         )}
         {(task.extractedLots.length > 0 || task.extractedQtys.length > 0) && (
