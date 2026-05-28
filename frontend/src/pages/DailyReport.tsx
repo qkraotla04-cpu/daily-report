@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useAuth } from '../contexts/AuthContext'
 import { pasteApi, type ParsedDay, type ParsedTask } from '../api/paste'
@@ -25,6 +25,7 @@ function dateLine(iso: string): { md: string; w: string } {
 
 export default function DailyReport() {
   const { user } = useAuth()
+  const qc = useQueryClient()
   const [tab, setTab] = useState<Tab>('PASTE')
   const [days, setDays] = useState<ParsedDay[]>([])
   const [parseError, setParseError] = useState('')
@@ -47,6 +48,8 @@ export default function DailyReport() {
     mutationFn: (text: string) => pasteApi.submit(text),
     onSuccess: (res) => {
       setSubmitMsg({ kind: 'ok', text: `${res.saved}건의 일지가 저장되었습니다.` })
+      // Dashboard의 '오늘 현황' 카드가 즉시 갱신되도록 캐시 무효화
+      qc.invalidateQueries({ queryKey: ['reports'] })
     },
     onError: (err: AxiosError<{ error: { message: string } }>) => {
       setSubmitMsg({
