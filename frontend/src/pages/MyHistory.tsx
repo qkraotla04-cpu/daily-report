@@ -5,9 +5,9 @@ import { dateToIso, startOfMonth, endOfMonth, formatKoreanDate } from '../utils/
 import ReportVersionPanel from '../components/ReportVersionPanel'
 
 const STATUS_LABEL: Record<string, { ko: string; cls: string }> = {
-  COMPLETED: { ko: '완료', cls: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
-  IN_PROGRESS: { ko: '진행중', cls: 'bg-amber-50 text-amber-700 border-amber-100' },
-  ON_HOLD: { ko: '보류', cls: 'bg-slate-100 text-slate-600 border-slate-200' },
+  COMPLETED:   { ko: '완료',  cls: 'v2-pill-done border border-transparent' },
+  IN_PROGRESS: { ko: '진행중', cls: 'v2-pill-doing border border-transparent' },
+  ON_HOLD:     { ko: '보류',  cls: 'v2-pill-wait border border-transparent' },
 }
 
 export default function MyHistory() {
@@ -175,7 +175,7 @@ export default function MyHistory() {
                     return (
                       <li
                         key={t.id}
-                        className="text-[13px] bg-slate-50/40 rounded-xl p-3 border border-slate-200"
+                        className="text-[13px] bg-slate-50 rounded-xl p-3 border border-slate-200"
                       >
                         <div className="flex items-start gap-2 mb-1">
                           <span className="text-[12px] num-mono text-slate-400 mt-0.5">{t.taskNo}</span>
@@ -231,7 +231,7 @@ function DetailField({ label, value }: { label: string; value: string }) {
       <h4 className="text-[12px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
         {label}
       </h4>
-      <p className="text-[13px] text-slate-700 whitespace-pre-wrap bg-slate-50/40 rounded-lg p-3 border border-slate-200 leading-relaxed">
+      <p className="text-[13px] text-slate-700 whitespace-pre-wrap bg-slate-50 rounded-lg p-3 border border-slate-200 leading-relaxed">
         {value}
       </p>
     </div>
